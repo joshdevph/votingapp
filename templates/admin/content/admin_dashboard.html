@@ -1,0 +1,37 @@
+{% extends 'admin/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="card-area">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mt-5">
+            <div class="card card-bordered">
+                <img class="card-img-top img-fluid" src="{% static 'images/card/card-img5.jpg' %}" alt="image">
+                <div class="card-body">
+                    <h5 class="title">Stockholder</h5>
+                    <a href="#" class="btn btn-primary">Go More....</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mt-5">
+            <div class="card card-bordered">
+                <img class="card-img-top img-fluid" src="{% static 'images/card/card-img5.jpg' %}" alt="image">
+                <div class="card-body">
+                    <h5 class="title">Election</h5>
+                    <a href="#" class="btn btn-primary">Go More....</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mt-5">
+            <div class="card card-bordered">
+                <img class="card-img-top img-fluid" src="{% static 'images/card/card-img5.jpg' %}" alt="image">
+                <div class="card-body">
+                    <h5 class="title">Votes</h5>
+                    <a href="#" class="btn btn-primary">Go More....</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
