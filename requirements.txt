@@ -79,5 +79,6 @@ webencodings==0.5.1
 websocket-client==0.57.0
 Werkzeug==0.16.0
 whichcraft==0.6.1
+whitenoise==5.1.0
 xhtml2pdf==0.2.3
 zope.interface==4.7.1
