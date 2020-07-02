@@ -31,6 +31,7 @@ django-split-settings==1.0.0
 djangorestframework==3.11.0
 docker==4.1.0
 future==0.18.2
+gunicorn==20.0.4
 hiredis==1.0.1
 html5lib==1.0.1
 hyperlink==19.0.0
