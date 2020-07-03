@@ -24,7 +24,12 @@ SECRET_KEY = 'fnq6)j2p2apj-4&bygh8r-q$ru_1y6nrozf)f2)82w528sbb_+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'joshuadignadice24@gmail.com'
+EMAIL_HOST_PASSWORD = 'mobiledeveloper24'
 ALLOWED_HOSTS = []
 
 
@@ -38,7 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'login',
-    'apps.admin_dashboard'
+    'apps.admin_dashboard',
+    'apps.admin_newstockholder',
+    'apps.clientdashboard'
 ]
 
 MIDDLEWARE = [
@@ -77,10 +84,16 @@ WSGI_APPLICATION = 'votingapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+
+        'NAME': 'votingapp',
+        'USER': 'postgres',
+        'HOST': 'localhost',
+        'PASSWORD': 'admin',
+        'PORT': '5432'
     }
 }
 
@@ -128,3 +141,6 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = '/'
+
+MEDIA_URL = '/media/'
+

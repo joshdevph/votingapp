@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from apps.admin_newstockholder.models import StockHolder
 
 def login(request):
     if request.method == 'POST':
@@ -11,9 +12,22 @@ def login(request):
         if form.is_valid():
             user = form.get_user()
             auth_login(request, user)
-            return redirect ('admin_dashboard')
-        else:
-            print('Invalid')
+            # Fetching data of Logged in user
+            getusername = request.user.get_username()
+            logged_user = User.objects.get(username=getusername)
+            user_id = logged_user.id
+            is_staff = logged_user.is_staff
+            fname = logged_user.first_name
+            lname = logged_user.last_name
+            # Storing UserID and UserLevel (Adim or Client) to Session
+            request.session['user_id'] = user_id
+            request.session['is_staff'] = is_staff
+            fullname = fname + ' ' + lname
+            request.session['fullname'] = fname + ' ' + lname
+            if is_staff == False:
+                return redirect('reset_password')
+            else:
+                return redirect('admin_dashboard')
     else:
         form = AuthenticationForm()
         form.fields['username'].widget.attrs['id'] = "exampleInputEmail1"
