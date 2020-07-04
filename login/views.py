@@ -24,8 +24,18 @@ def login(request):
             request.session['is_staff'] = is_staff
             fullname = fname + ' ' + lname
             request.session['fullname'] = fname + ' ' + lname
+
+
             if is_staff == False:
-                return redirect('reset_password')
+                stockholder= StockHolder.objects.get(sh_account=user_id)
+
+                status = stockholder.sh_password_status
+                if status == "Updated":
+                    return redirect('complete_sh_data')
+                else:
+                    # redirect to change password form
+                    return redirect('reset_password')
+
             else:
                 return redirect('admin_dashboard')
     else:

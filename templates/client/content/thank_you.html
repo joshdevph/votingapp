@@ -36,28 +36,17 @@
     <!-- preloader area end -->
     
     <!-- login area start -->
-    <div class="login-area">
+    <div class="login-area login-s2">
         <div class="container">
-            <div class="login-box ptb--100">
-                <form action="{% url 'reset' %}" method="POST">
-                    {% csrf_token %}
+            <div class="login-box ptb--30">
+                <form>
                     <div class="login-form-head">
-                        <h4>Reset Password</h4>
-                        <p>Please Reset Your Password for Secure Login</p>
+                        <h4>THANK YOU!</h4>
+                        <p>Click the button and start managing your Account</p>
                     </div>
                     <div class="login-form-body">
-                        <div class="form-gp">
-                            <label for="exampleInputPassword1">Old Password</label>
-                            <input type="password" name="old_pass">
-                            <i class="ti-lock"></i>
-                        </div>
-                        <div class="form-gp">
-                            <label for="exampleInputPassword2">New Password</label>
-                            <input type="password" name="new_pass">
-                            <i class="ti-lock"></i>
-                        </div>
-                        <div class="submit-btn-area mt-5">
-                            <button id="form_submit" type="submit">Reset <i class="ti-arrow-right"></i></button>
+                        <div class="submit-btn-area">
+                            <button id="form_submit" type="submit">Welcome <i class="ti-arrow-right"></i></button>
                         </div>
                     </div>
                 </form>
