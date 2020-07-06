@@ -1,44 +1,72 @@
-{% extends 'admin/base.html' %}
+{% extends 'admin/main.html' %}
 {% load staticfiles %}
 {% block content %}
-<div class="card-area">
-    <div class="row">
-        <div class="col-lg-4 col-md-6 mt-5">
-            <div class="card card-bordered">
-                <img class="card-img-top img-fluid" src="{% static 'images/card/card-img5.jpg' %}" alt="image">
-                <div class="card-body">
-                    
-                    <div class="submit-btn-area">
+<div class="right_col" role="main">
+    <div class="">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Stockholder</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <article class="media event">
+
+                    <div class="col-md-9 col-sm-9  offset-md-3">
                         <a href="{% url 'admin_stockholder' %}">
-                        <button id="form_submit" type="submit">Stockholders <i class="ti-arrow-right"></i></button>
+                        <button type="submit" class="btn btn-round btn-secondary pl-4">Manage <i class="ti ti-arrow-right pl-4"></i></button>
                         </a>
                     </div>
+           
+              </article>
 
-                </div>
             </div>
+          </div>
         </div>
+        <div class="col-md-4">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Election</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <article class="media event">
 
-        <div class="col-lg-4 col-md-6 mt-5">
-            <div class="card card-bordered">
-                <img class="card-img-top img-fluid" src="{% static 'images/card/card-img5.jpg' %}" alt="image">
-                <div class="card-body">
-                    <div class="submit-btn-area">
-                        <button id="form_submit" type="submit">Elections <i class="ti-arrow-right"></i></button>
+                    <div class="col-md-9 col-sm-9  offset-md-3">
+                        <a href="/">
+                        <button type="submit" class="btn btn-success">Manage <i class="ti ti-arrow-right pl-4"></i></button>
+                        </a>
                     </div>
-                </div>
+           
+              </article>
+
             </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Votes</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <article class="media event">
+
+                    <div class="col-md-9 col-sm-9  offset-md-3">
+                        <a href="/">
+                        <button type="submit" class="btn btn-success">Manage <i class="ti ti-arrow-right pl-4"></i></button>
+                        </a>
+                    </div>
+           
+              </article>
+
+            </div>
+          </div>
         </div>
 
-        <div class="col-lg-4 col-md-6 mt-5">
-            <div class="card card-bordered">
-                <img class="card-img-top img-fluid" src="{% static 'images/card/card-img5.jpg' %}" alt="image">
-                <div class="card-body">
-                    <div class="submit-btn-area">
-                        <button id="form_submit" type="submit">Votes <i class="ti-arrow-right"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+      </div>
     </div>
-</div>
+  </div>
 {% endblock content %}

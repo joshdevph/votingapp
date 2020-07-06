@@ -46,7 +46,7 @@
                     </div>
                     <div class="login-form-body">
                         {% csrf_token %}
-                        {{ form.error}}
+                        {{ form.errors }}
                             <div class="form-gp">
                                 <label for="exampleInputEmail1">{{ form.username.label }}</label>
                                 {{ form.username }}
