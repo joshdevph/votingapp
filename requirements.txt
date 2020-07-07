@@ -19,7 +19,7 @@ cookiecutter==1.7.0
 cryptography==2.8
 daphne==2.4.1
 decorator==4.4.1
-Django==2.2.6
+Django==2.2.13
 django-cors-headers==3.2.1
 django-crispy-forms==1.8.1
 -e git+https://github.com/mjs7231/django-dbbackup.git@619e94faa30c1cb5764aebbd5857efe40e1d68d2#egg=django_dbbackup
