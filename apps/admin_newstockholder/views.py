@@ -27,13 +27,6 @@ def admin_stockholder(request):
             user.password = hashed_pass
             user.save()
             account_user = user.id
-
-            # uname= user_form['username'].value()
-            # fname= user_form['first_name'].value()
-            # lname= user_form['last_name'].value()
-            # email= user_form['email'].value()
-
-            # stockholder = StockHolder.objects.create(sh_fname=fname, sh_lname=lname, sh_email=email, sh_account=User.objects.get(password=hashed_pass))
     
             sh_fname = request.POST.get("sh_fname")
             sh_lname = request.POST.get("sh_lname")
@@ -52,7 +45,7 @@ def admin_stockholder(request):
                 time = str(current_datetime.hour)+str(current_datetime.minute)+str(current_datetime.second)
                 # comp_code = company_data.company_code
                 ext = upload_images.name.split(".")[-1]
-                name = fs.save('Media_Files/StockHolder_Profile_Picture/-['+date+']-['+time+'].'+ext, upload_images)
+                name = fs.save('Media_Files/StockHolder_Profile_Picture/'+time+'.'+ext, upload_images)
                 url = fs.url(name)
 
             sh = StockHolder.objects.create(sh_fname=sh_fname, 
@@ -66,7 +59,6 @@ def admin_stockholder(request):
                                             sh_proxy_mname=sh_proxy_mname,
                                             sh_account= User.objects.get(id=account_user),
                                             )
-
 
     else:
         form = AccountForm()
@@ -85,16 +77,17 @@ def update_stockholder(request, pk):
         sh_proxy_lname = request.POST.get("sh_proxy_lname")
         sh_proxy_mname = request.POST.get("sh_proxy_mname")
 
+        # UPLOAD IMAGE IN MEDIA STORAGE and CONVERTING ITS FILENAME
         if upload_images:
                 fs = FileSystemStorage()
                 current_datetime = datetime.datetime.now()
                 date = str(current_datetime.month)+'-'+str(current_datetime.day)+'-'+str(current_datetime.year)
                 time = str(current_datetime.hour)+str(current_datetime.minute)+str(current_datetime.second)
-                # comp_code = company_data.company_code
                 ext = upload_images.name.split(".")[-1]
-                name = fs.save('Media_Files/StockHolder_Profile_Picture/-['+date+']-['+time+'].'+ext, upload_images)
+                name = fs.save('Media_Files/StockHolder_Profile_Picture/'+time+'.'+ext, upload_images)
                 url = fs.url(name)
 
+        # SAVING STOCKHOLDER INFO
         sh_accounts = StockHolder.objects.filter(id=pk).update(sh_fname=sh_fname,
                             sh_lname=sh_lname, 
                             sh_mname=sh_mname, 

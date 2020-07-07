@@ -13,7 +13,7 @@ class AccountForm(forms.ModelForm):
         self.fields['sh_mname'].widget.attrs.update({'class': 'form-control'})
         self.fields['sh_email'].widget.attrs.update({'class': 'form-control'})
         self.fields['sh_position'].widget.attrs.update({'class': 'form-control'})
-        self.fields['company_images'].widget.attrs.update({'class': 'form-control'})
+        self.fields['company_images'].widget.attrs.update({'class': 'form-control border-0'})
         self.fields['sh_proxy_fname'].widget.attrs.update({'class': 'form-control'})
         self.fields['sh_proxy_lname'].widget.attrs.update({'class': 'form-control'})
         self.fields['sh_proxy_mname'].widget.attrs.update({'class': 'form-control'})
