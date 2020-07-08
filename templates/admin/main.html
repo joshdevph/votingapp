@@ -37,6 +37,13 @@
     <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+    <!-- PNotify -->
+    <link href="{% static 'vendors/pnotify/dist/pnotify.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/pnotify/dist/pnotify.buttons.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/pnotify/dist/pnotify.nonblock.css' %}" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
+
   </head>
 
   <body class="nav-md footer_fixed">
@@ -147,5 +154,55 @@
     <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
     <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
     <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+
+    <!-- PNotify -->
+    <script src="{% static 'vendors/pnotify/dist/pnotify.js' %}"></script>
+    <script src="{% static 'vendors/pnotify/dist/pnotify.buttons.js' %}"></script>
+    <script src="{% static 'vendors/pnotify/dist/pnotify.nonblock.js' %}"></script>
+
+
+    <!-- Preview ADD MODAL Image Javascript -->
+    <script type="text/javascript">
+      var imgPreview;
+      
+      $(document).ready(function(){
+        //prepare instant image preview
+        var p = $("#filePreview");
+        $("#id_company_images").change(function(){
+          //fadeOut or hide previews
+          p.fadeOut();
+      
+          //prepare HTML5 FileReader
+          var oFReader = new FileReader();
+          oFReader.readAsDataURL(document.getElementById("id_company_images").files[0]);
+      
+          oFReader.onload = function (oFREvent) {
+            p.attr('src', oFREvent.target.result).fadeIn();
+          };
+        });
+      });
+      </script>
+
+    <!-- Preview UPDATE MODAL Image Javascript -->
+    <script type="text/javascript">
+      var imgPreview;
+      
+      $(document).ready(function(){
+        //prepare instant image preview
+        var p = $("#filePreview2");
+        $("#company_images").change(function(){
+          //fadeOut or hide previews
+          p.fadeOut();
+      
+          //prepare HTML5 FileReader
+          var oFReader = new FileReader();
+          oFReader.readAsDataURL(document.getElementById("company_images").files[0]);
+      
+          oFReader.onload = function (oFREvent) {
+            p.attr('src', oFREvent.target.result).fadeIn();
+          };
+        });
+      });
+      </script>
   </body>
 </html>
