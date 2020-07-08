@@ -1,0 +1,102 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+{% block content %}
+
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                <div class="x_title">
+                    <h2>Vote Master<small>Attendace Checking</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <form method="POST">
+                    <li>               
+                        <button type="submit" scope="row"  class="btn btn-sm btn-round btn-primary right pl-4 pr-4 " name="save" value="Save">Save<i class="ti ti-plus pl-2"></i></button>
+                    </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card-box table-responsive">
+
+
+                                    {% csrf_token %}
+                                    <table class="table table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr>
+                                                <th><input type="checkbox" scope="row" onclick="markAll(this.checked)" id="checkAll">
+                                                <label for="checkAll">Mark All</label>
+                                                </th>
+                                                <th>Stockholders</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if count.attendance_count > 0 %}
+                        
+                                                {% for at in attendance %}
+                                                    {% if at.at_status == 'present' %}
+                                                        <tr>
+                                                            <td><input type="checkbox" value="{{ at.sh_id }}" id="{{ at.sh_fullname }}{{ at.sh_id }}" class="at_check" name="stock_holder{{ at.sh_id }}" checked>  </td>
+                                                            <td><label for="{{ at.sh_fullname }}{{ at.sh_id }}">{{ at.sh_fullname }}</label></td>
+                                                        </tr>
+                                                        {% else %}
+                                                        <tr>
+                                                            <td><input type="checkbox" value="{{ at.sh_id }}" id="{{ at.sh_fullname }}{{ at.sh_id }}" class="at_check" name="stock_holder{{ at.sh_id }}"> </td>
+                                                            <td><label for="{{ at.sh_fullname }}{{ at.sh_id }}">{{ at.sh_fullname }}</label></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                        
+                                                {% else %}
+                                                    {% for sh in stock_holder %}
+                                                        <tr>
+                                                            <td><input type="checkbox" value="{{ sh.id }}" id="{{ sh.sh_fname }}{{ sh.sh_lname }}{{ sh.id }}" class="at_check" name="stock_holder{{ sh.id }}"> </td>
+                                                            <td><label for="{{ sh.sh_fname }}{{ sh.sh_lname }}{{ sh.id }}">{{ sh.sh_fname }} {{ sh.sh_lname }}</label></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </form>
+
+                    
+                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+<script>
+    function markAll(checked) {
+        var checkBoxes = document.getElementsByClassName("at_check");
+        if (checked) {
+            for (var i = 0; i < checkBoxes.length; i++) {
+                checkBoxes[i].checked = "true";
+            }
+        }
+    }
+
+
+    var checkBoxes = document.getElementsByClassName("at_check");
+    for (var i = 0; i < checkBoxes.length; i++) {
+
+        checkBoxes[i].addEventListener("change", function(){
+            var check = document.getElementsByClassName("at_check");
+            for (var x = 0; x < check.length; x++) {
+                if (check[x].checked == false) {
+                    document.getElementById("checkAll").checked = false;
+                }
+            }
+        });
+    }
+
+</script>
+{% endblock %}

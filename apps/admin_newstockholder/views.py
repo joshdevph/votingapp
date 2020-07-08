@@ -10,8 +10,11 @@ from apps.clientdashboard.forms import AccountForm
 from django.core.files.storage import FileSystemStorage
 import datetime
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+
+@login_required(login_url="/")
 def admin_stockholder(request):
     sh_list =  StockHolder.objects.all().exclude(sh_account_status='deleted')
     user_form = UserForm(request.POST)
@@ -65,6 +68,8 @@ def admin_stockholder(request):
         user_form = UserForm()
     return render(request, 'admin/content/admin_stockholder.html', {'form': form, 'sh_list' : sh_list, 'user_form': user_form,})
 
+
+@login_required(login_url="/")
 def update_stockholder(request, pk):
     if request.method == "POST":
         sh_fname = request.POST.get("sh_fname")
@@ -100,6 +105,8 @@ def update_stockholder(request, pk):
 
     return redirect('admin_stockholder')
 
+
+@login_required(login_url="/")
 def delete_stockholder(request, pk):
     delete_sh = StockHolder.objects.filter(id=pk).update(sh_account_status='deleted')
     messages.error(request, 'Data Successfully Deleted')
