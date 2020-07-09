@@ -1,0 +1,63 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+{% block content %}
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                <div class="x_title">
+                    <h2>Vote Master<small>Start Election</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                    <!-- FORM VALIDATION - APPEAR IF IT HAS A ERROR -->
+                    {% if message.message == 'repeat' %}
+                    <p class="alert alert-danger">You have already started an Election. <a href="attendance">Check Attendance</a></p>
+                    {% elif message.message == 'success' %}
+                    <p class="alert alert-success">Election started. <a href="attendance">Check Attendance</a></p>
+                    {% endif %}
+                    <!-- <li><button class="btn btn-sm btn-round btn-primary pl-4 pr-4 " data-toggle="modal" data-target="#exampleModalCenter"> Create <i class="ti ti-plus pl-2"></i> </button></a> -->
+                    </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card-box table-responsive">
+
+                                <center>
+                                    <div class="card card-body w-50">
+                                    <form action="{% url 'admin_votemaster' %}" method="POST">
+                                      {% csrf_token %}
+                                          <div class="form-group text-left">
+                                              <label for="disabledTextInput">{{ form.code.label }}</label>
+                                              {{ form.code }}
+                                          </div>
+                                          <div class="form-group text-left">
+                                              <label for="disabledTextInput">{{ form.description.label }}</label>
+                                              {{ form.description }}
+                                          </div>
+                      
+                                          <div class="modal-footer">
+                                            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                                            <button type="submit" class="btn btn-primary">Start</button>
+                                          </div>
+                                      </form>
+                                    </div>
+                                </center>
+
+
+
+                    
+                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+{% endblock %}
