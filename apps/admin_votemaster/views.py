@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from apps.admin_votemaster.models import Election, Attendance
+from apps.admin_votemaster.models import Election, Attendance, Nominee
 from apps.admin_votemaster.forms import ElectionForm
 from django.contrib.auth.models import User
 from apps.admin_newstockholder.models import StockHolder
@@ -92,7 +92,56 @@ def admin_votemaster_attendance(request):
         return render(request, 'admin/content/admin_votemaster_attendance.html', context)
     return render(request, 'admin/content/admin_votemaster_attendance.html', context)
 
-
 @login_required(login_url="")
 def admin_votemaster_nomination(request):
-    return render(request, 'admin/content/admin_votemaster_nomination.html')
+    stock_holder = StockHolder.objects.all()
+    latest_election = Election.objects.latest('date_added') #get latest election, meaning last created election or this day's election
+    current_attendance = Attendance.objects.filter(election_code=latest_election.code) #get current elections attendance record
+    nominees = Nominee.objects.all()
+
+    context = {
+        'form': ElectionForm,
+        'stock_holder': stock_holder,
+        'attendance': current_attendance,
+        'nominees': nominees,
+        'count':  {
+            'stock_holder_count': stock_holder.count(),
+            'attendance_count': current_attendance.count(),
+            'nominees_count': nominees.count()
+        }
+    }
+
+    return render(request, 'admin/content/admin_votemaster_nomination.html', context)
+
+def admin_votemaster_add_nominee(request, id):
+    stock_holder = StockHolder.objects.all()
+    latest_election = Election.objects.latest('date_added') #get latest election, meaning last created election or this day's election
+    current_attendance = Attendance.objects.filter(election_code=latest_election.code) #get current elections attendance record
+    selected_stockholder = StockHolder.objects.get(id=int(id))
+    nominees = Nominee.objects.all()
+
+    if not Nominee.objects.filter(sh_id=id):
+        new_nominee = Nominee(
+            sh_id=id,
+            election_code=latest_election.code,
+            sh_fullname=selected_stockholder.sh_fname + " " + selected_stockholder.sh_lname,
+        )
+        new_nominee.save()
+
+    context = {
+        'form': ElectionForm,
+        'stock_holder': stock_holder,
+        'attendance': current_attendance,
+        'nominees': nominees,
+        'count':  {
+            'stock_holder_count': stock_holder.count(),
+            'attendance_count': current_attendance.count(),
+            'nominees_count': nominees.count()
+        }
+    }
+
+    return redirect('admin_votemaster_nomination')
+
+def admin_votemaster_remove_nominee(request, id):
+    Nominee.objects.filter(id=id).delete()
+    return redirect('admin_votemaster_nomination')
