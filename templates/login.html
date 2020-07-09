@@ -48,8 +48,11 @@
                     
                 <form action="/" method="POST">
                     <div class="login-form-head">
-                        <h4>Sign In</h4>
-                        <p>Hello there, Sign in and start managing your Elections</p>
+                        
+                        <img src="{% static 'images/icon/acemc-logo-dark.png'%}" alt="">
+                        <h5 class="mt-2">Allied Care Experts Medical Center</h5>
+                        <br>
+                        
                     </div>
                     <div class="login-form-body">
                         {% csrf_token %}
