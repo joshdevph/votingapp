@@ -51,7 +51,9 @@ INSTALLED_APPS = [
     'login',
     'apps.admin_dashboard',
     'apps.admin_newstockholder',
-    'apps.clientdashboard'
+    'apps.admin_votemaster',
+
+    # 'apps.clientdashboard'
 ]
 
 MIDDLEWARE = [

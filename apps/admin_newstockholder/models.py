@@ -15,3 +15,4 @@ class StockHolder(models.Model):
     sh_date_added = models.DateTimeField(auto_now_add=True)
     sh_account= models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
     sh_password_status = models.CharField(blank=True, max_length=254)
+    sh_account_status = models.CharField(blank=True, max_length=254)

@@ -38,15 +38,15 @@ def complete_sh_data(request):
     if request.method == 'POST':
         form = AccountForm(request.POST, request.FILES)
         if form.is_valid():
-            sh_fname = form.cleaned_data.get("sh_fname")
-            sh_lname = form.cleaned_data.get("sh_lname")
-            sh_mname = form.cleaned_data.get("sh_mname")
-            sh_email = form.cleaned_data.get("sh_email")
-            sh_position = form.cleaned_data.get("sh_position")
-            company_images = request.FILES['company_images']
-            sh_proxy_fname = form.cleaned_data.get("sh_proxy_fname")
-            sh_proxy_lname = form.cleaned_data.get("sh_proxy_lname")
-            sh_proxy_mname = form.cleaned_data.get("sh_proxy_mname")
+            sh_fname = request.POST.get("sh_fname")
+            sh_lname = request.POST.get("sh_lname")
+            sh_mname = request.POST.get("sh_mname")
+            sh_email = request.POST.get("sh_email")
+            sh_position = request.POST.get("sh_position")
+            company_images = request.FILES.get['company_images']
+            sh_proxy_fname = request.POST.get("sh_proxy_fname")
+            sh_proxy_lname = request.POST.get("sh_proxy_lname")
+            sh_proxy_mname = request.POST.get("sh_proxy_mname")
 
             if company_images:
                 fs = FileSystemStorage()
