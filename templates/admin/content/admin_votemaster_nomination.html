@@ -1,11 +1,76 @@
-{% extends 'admin/base.html' %}
+{% extends 'admin/main.html' %}
 {% load static %}
 {% block content %}
-<div class="card mt-5">
-    <div class="card-body">
-        <h1 class="text-center">Vote Master</h1>
-        <p class="text-muted text-center">Nomination</p>
+<div class="right_col" role="main">
+    <div class="">
+      <div class="clearfix"></div>
 
+      <div class="row" style="display: block;">
+        <div class="col-md-6 col-sm-6  ">
+          <div class="x_panel">
+            <div class="x_title">
+                <h2>Stockholder<small> Nomination</small></h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sh in stock_holder %}
+                            <tr>
+                                <td>{{ sh.sh_fname }} {{ sh.sh_lname }}</td>
+                                <td><a href="/admin_votemaster/nomination/add_nominee/{{ sh.id }}" class="btn btn-primary btn-sm">Nominate</a> </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6 col-sm-6  ">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Nominees</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                {% if count.nominees_count > 0 %}
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for nominee in nominees %}
+                                <tr>
+                                    <td> {{ nominee.sh_fullname }}</td>
+                                    <td> <a href="/admin_votemaster/nomination/delete_nominee/{{ nominee.id }}" class="btn btn-danger btn-sm">Remove</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="alert alert-danger">No nominees for this current election</p>
+                {% endif %}
+
+            </div>
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}
