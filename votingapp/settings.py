@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'apps.admin_dashboard',
     'apps.admin_newstockholder',
     'apps.admin_votemaster',
+    'apps.eballot'
 
     # 'apps.clientdashboard'
 ]
