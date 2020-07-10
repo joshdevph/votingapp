@@ -12,8 +12,10 @@
                     <h2>Vote Master<small>Attendace Checking</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <form method="POST">
-                    <li>               
-                        <button type="submit" scope="row"  class="btn btn-sm btn-round btn-primary right pl-4 pr-4 " name="save" value="Save">Save<i class="ti ti-plus pl-2"></i></button>
+                    <li>
+                       <a href="{% url 'admin_votemaster_nomination' %}"><button scope="row" type="button" class="btn btn-sm btn-round btn-success right pl-4 pr-4 ">Start Nomination<i class="ti ti-plus pl-2"></i></button></a>           
+                       
+                       <button type="submit" scope="row"  class="btn btn-sm btn-round btn-primary right pl-4 pr-4 " name="save" value="Save">Save<i class="ti ti-plus pl-2"></i></button>
                     </li>
                     </ul>
                     <div class="clearfix"></div>
