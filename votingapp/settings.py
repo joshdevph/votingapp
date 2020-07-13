@@ -100,7 +100,7 @@ DATABASES = {
         'NAME': 'votingapp',
         'USER': 'postgres',
         'HOST': 'localhost',
-        'PASSWORD': 'admin',
+        'PASSWORD': 'root',
         'PORT': '5432'
     }
 }
