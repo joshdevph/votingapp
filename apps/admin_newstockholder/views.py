@@ -31,6 +31,8 @@ def admin_stockholder(request):
             user.save()
             account_user = user.id
     
+            sh_shares = request.POST.get("sh_shares")
+            mobile_no = request.POST.get("mobile_no")
             sh_fname = request.POST.get("sh_fname")
             sh_lname = request.POST.get("sh_lname")
             sh_mname = request.POST.get("sh_mname")
@@ -40,6 +42,7 @@ def admin_stockholder(request):
             sh_proxy_fname = request.POST.get("sh_proxy_fname")
             sh_proxy_lname = request.POST.get("sh_proxy_lname")
             sh_proxy_mname = request.POST.get("sh_proxy_mname")
+            sh_proxy_email = request.POST.get("sh_proxy_email")
 
             if upload_images:
                 fs = FileSystemStorage()
@@ -61,6 +64,9 @@ def admin_stockholder(request):
                                             sh_proxy_lname=sh_proxy_lname,
                                             sh_proxy_mname=sh_proxy_mname,
                                             sh_account= User.objects.get(id=account_user),
+                                            sh_shares=sh_shares,
+                                            mobile_no=mobile_no,
+                                            sh_proxy_email = sh_proxy_email
                                             )
 
     else:
@@ -71,7 +77,10 @@ def admin_stockholder(request):
 
 @login_required(login_url="/")
 def update_stockholder(request, pk):
+    datenow = datetime.datetime.now()
     if request.method == "POST":
+        sh_shares = request.POST.get("sh_shares")
+        mobile_no = request.POST.get("mobile_no")
         sh_fname = request.POST.get("sh_fname")
         sh_lname = request.POST.get("sh_lname")
         sh_mname = request.POST.get("sh_mname")
@@ -81,6 +90,8 @@ def update_stockholder(request, pk):
         sh_proxy_fname = request.POST.get("sh_proxy_fname")
         sh_proxy_lname = request.POST.get("sh_proxy_lname")
         sh_proxy_mname = request.POST.get("sh_proxy_mname")
+        sh_proxy_email = request.POST.get("sh_proxy_email")
+        edited_by = request.POST.get("edited_by")
 
         # UPLOAD IMAGE IN MEDIA STORAGE and CONVERTING ITS FILENAME
         if upload_images:
@@ -93,14 +104,20 @@ def update_stockholder(request, pk):
                 url = fs.url(name)
 
         # SAVING STOCKHOLDER INFO
-        sh_accounts = StockHolder.objects.filter(id=pk).update(sh_fname=sh_fname,
+        sh_accounts = StockHolder.objects.filter(id=pk).update(
+                            sh_shares=sh_shares,
+                            sh_fname=sh_fname,
                             sh_lname=sh_lname, 
-                            sh_mname=sh_mname, 
+                            sh_mname=sh_mname,
+                            mobile_no=mobile_no, 
                             sh_position=sh_position, 
                             company_images=url,
                             sh_proxy_fname=sh_proxy_fname, 
                             sh_proxy_lname=sh_proxy_lname, 
-                            sh_proxy_mname=sh_proxy_mname)
+                            sh_proxy_mname=sh_proxy_mname,
+                            sh_proxy_email=sh_proxy_email,
+                            updated= datenow,
+                            updated_by=edited_by)
 
 
     return redirect('admin_stockholder')

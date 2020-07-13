@@ -1,63 +1,124 @@
 {% extends 'admin/main.html' %}
 {% load static %}
 {% block content %}
-<!-- page content -->
 <div class="right_col" role="main">
-    <div class="">
-        <div class="row">
-            <div class="col-md-12 col-sm-12 ">
-                <div class="x_panel">
-                <div class="x_title">
-                    <h2>Vote Master<small>Start Election</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                    <!-- FORM VALIDATION - APPEAR IF IT HAS A ERROR -->
-                    {% if message.message == 'repeat' %}
-                    <p class="alert alert-danger">You have already started an Election. <a href="attendance">Check Attendance</a></p>
-                    {% elif message.message == 'success' %}
-                    <p class="alert alert-success">Election started. <a href="attendance">Check Attendance</a></p>
-                    {% endif %}
-                    <!-- <li><button class="btn btn-sm btn-round btn-primary pl-4 pr-4 " data-toggle="modal" data-target="#exampleModalCenter"> Create <i class="ti ti-plus pl-2"></i> </button></a> -->
-                    </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="card-box table-responsive">
+  <div class="">
 
-                                <center>
-                                    <div class="card card-body w-50">
-                                    <form action="{% url 'admin_votemaster' %}" method="POST">
-                                      {% csrf_token %}
-                                          <div class="form-group text-left">
-                                              <label for="disabledTextInput">{{ form.code.label }}</label>
-                                              {{ form.code }}
-                                          </div>
-                                          <div class="form-group text-left">
-                                              <label for="disabledTextInput">{{ form.description.label }}</label>
-                                              {{ form.description }}
-                                          </div>
-                      
-                                          <div class="modal-footer">
-                                            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-                                            <button type="submit" class="btn btn-primary">Start</button>
-                                          </div>
-                                      </form>
-                                    </div>
-                                </center>
-
-
-
-                    
-                    
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="page-title">
     </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Election<small>Start Election</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><button class="btn btn-sm btn-round btn-primary pl-4 pr-4 "data-toggle="modal" data-target="#exampleModal"> Election <i class="ti ti-plus pl-2"></i> </button></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <div class="row">
+
+              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Add New Election</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="{% url 'admin_votemaster' %}" method="POST">
+                      {% csrf_token %}
+                          <div class="form-group text-left">
+                              <label for="disabledTextInput">{{ form.description.label }}</label>
+                              {{ form.description }}
+                          </div>
+                          <div class="form-group text-left">
+                              <label for="disabledTextInput">{{ form.target_date.label }}</label>
+                              {{ form.target_date }}
+                          </div>
+      
+                          <div class="form-group text-left">
+                              <label for="disabledTextInput">{{ form.code.label }}</label>
+                              {{ form.code }}
+                          </div>
+      
+                          <div class="modal-footer">
+                              <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                              <button type="submit" class="btn btn-primary">Start</button>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                <thead>
+                  <tr>
+                      <th>Code</th>
+                      <th>Description</th>
+                      <th>Target Date</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+                  <tbody>
+                      {% for el in election_list %}
+                          <tr>
+                              <td>{{ el.code }}</td>
+                              <td>{{ el.description }}</td>
+                              <td>{{ el.target_date }}</td>
+
+
+                              {% if el.status == 'pending'%}
+
+                                  <td class="text-success">{{ el.status }}</td>
+                                  {% else %}
+
+                                      <td class="text-muted">{{ el.status }}</td>
+                              {% endif %}
+
+                              <td>
+                                  <a href="/admin_votemaster/edit/{{ el.id }}" class="btn btn-sm btn-success"><i class="fa fa-eye"></i> View</a>
+                                  <a href="/admin_votemaster/delete_election/{{ el.id }}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete </a>
+                              </td>
+                          </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<!-- /page content -->
+
+<script>
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return year + month + day ;
+    }
+
+    function changeTDate(d) {
+        election_code = "BOD-" + formatDate(d);
+        id_code.value = election_code;
+    }
+</script>
 {% endblock %}
