@@ -21,12 +21,12 @@ class SelectElection(forms.ModelForm):
 class EBallotForm(forms.ModelForm):
     class Meta:
         model = EBallot
-        fields = ('election_code','eballot_batch_id', 'eballot_num', 'sh_id')
+        fields = ('election_code','eballot_batch_id', 'eballot_num', 'sh_fullname')
         labels = {
             'election_code': 'Election Code',
             'eballot_batch_id': 'eBallot Batch ID',
             'eballot_num': 'eBallot No.',
-            'sh_id': 'Stockholder Name'
+            'sh_fullname': 'Stockholder Name'
         }
 
     def __init__(self, *args, **kwargs):
@@ -34,5 +34,5 @@ class EBallotForm(forms.ModelForm):
         self.fields['election_code'].widget.attrs.update({'class': 'form-control'})
         self.fields['eballot_batch_id'].widget.attrs.update({'class': 'form-control'})
         self.fields['eballot_num'].widget.attrs.update({'class': 'form-control'})
-        self.fields['sh_id'].widget.attrs.update({'class': 'form-control'})
+        self.fields['sh_fullname'].widget.attrs.update({'class': 'form-control'})
         
