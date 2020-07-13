@@ -96,7 +96,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
 
-        'NAME': 'votingapp',
+        'NAME': 'votingapp2',
         'USER': 'postgres',
         'HOST': 'localhost',
         'PASSWORD': 'admin',
