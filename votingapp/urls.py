@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin_dashboard/',include('apps.admin_dashboard.urls')),
     path('admin_stockholder/',include('apps.admin_newstockholder.urls')),
     path('admin_votemaster/',include('apps.admin_votemaster.urls')),
+    path('eballot/',include('apps.eballot.urls'))
     # path('client_dashboard/',include('apps.clientdashboard.urls'))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
