@@ -19,5 +19,7 @@ class StockHolder(models.Model):
     sh_account= models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
     sh_password_status = models.CharField(blank=True, max_length=254)
     sh_account_status = models.CharField(blank=True, max_length=254)
+    sh_proxy_status = models.BooleanField(default=False)
+    sh_classification = models.BooleanField(default=False)
     updated = models.DateTimeField(auto_now=True)
     updated_by = models.CharField(blank=True, max_length=254)

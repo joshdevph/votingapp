@@ -1,0 +1,67 @@
+{% extends 'admin/main.html' %}
+{% load staticfiles %}
+{% block content %}
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>EBallot Form<small>Master List</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                            <!-- FORM VALIDATION - APPEAR IF IT HAS A ERROR -->
+
+                      <li><button class="btn btn-sm btn-round btn-primary pl-4 pr-4 " data-toggle="modal" data-target="#exampleModalCenter"> Create <i class="ti ti-plus pl-2"></i> </button></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <div class="row">
+                          <div class="col-sm-12">
+                            <div class="card-box table-responsive">
+
+
+                    <!-- STOCKHOLDER DATA TABLE -->
+
+                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                              <th>Election <Code></Code></th>
+                              <th>Ballot Batch ID</th>
+                              <th>Ballot No.</th>
+                              <th>Stockholder Name</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <!--  ******************** NOTE **********************-->
+                            <!-- Dont remove the delete and update Modals Inside the STOCKHOLDER DATA TABLE comments -->
+                           
+                            {% for list in eballot %}
+                            <tr>
+                              <td>{{list.election_code}}</td>
+                              <td>{{list.eballot_batch_id}}</td>
+                              <td>{{list.eballot_num}}</td>
+                              <td>{{list.sh_fullname}}</td>
+                              <td>
+                                <a href="eballot_form/{{ list.eballot_num_id }}" class="btn btn-sm btn-round btn-success pl-4 pr-4 "><i class="fa fa-eye"></i>  View</a>     
+                              </td>
+                            </tr>  
+                            {% endfor %}
+					
+                  </div>
+                </div>
+              </div>
+            </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <div class="clearfix"></div>
+
+{% endblock %}

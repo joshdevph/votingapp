@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'apps.admin_dashboard',
     'apps.admin_newstockholder',
     'apps.admin_votemaster',
+    'apps.eballot'
 
     # 'apps.clientdashboard'
 ]
@@ -96,7 +97,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
 
-        'NAME': 'votingapp2',
+        'NAME': 'votingapp',
         'USER': 'postgres',
         'HOST': 'localhost',
         'PASSWORD': 'admin',
