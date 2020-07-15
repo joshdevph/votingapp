@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -29,12 +29,6 @@
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
     <!-- modernizr css -->
     <script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
-    <!-- Datatables -->
-    <link rel="stylesheet" href="{% static 'css/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}">
 </head>
 
 <body>
@@ -159,22 +153,12 @@
     <!-- others plugins -->
     <script src="{% static 'js/plugins.js' %}"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
-    <!-- Datatables -->
-    <script src="{% static 'js/datatables.net/js/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'js/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
-    <script src="{% static 'js/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
-    <script src="{% static 'js/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
-    <script src="{% static 'js/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
-    <script src="{% static 'js/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
-    <script src="{% static 'js/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
-    <script src="{% static 'js/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
-    <script src="{% static 'js/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
-    <script src="{% static 'js/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
-    <script src="{% static 'js/jszip/dist/jszip.min.js' %}"></script>
-    <script src="{% static 'js/pdfmake/build/pdfmake.min.js' %}"></script>
-    <script src="{% static 'js/pdfmake/build/vfs_fonts.js' %}"></script>
+    <!-- Start datatable js -->
+    <script src="{% static 'js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'js/responsive.bootstrap.min.js' %}"></script>
 </body>
 
 </html>

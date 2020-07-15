@@ -1,0 +1,209 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+{% block content %}
+<div class="right_col" role="main">
+    <div class="">
+      <div class="clearfix"></div>
+        <div class="">
+            <div class="col-md-12 col-sm-6  ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2><i class="fa fa-edit"></i> Election <small>Start Election</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                </ul>
+                <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                    <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="false">View</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link " id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Attendee</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="true">Nominate</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade " id="home" role="tabpanel" aria-labelledby="home-tab">
+                        {% if message.update == 'success' %}
+                        <div class="alert alert-success alert-dismissible">
+                          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                          <strong>Success!</strong> Updates saved.
+                        </div>
+                        {% elif  message.update == 'repeat' %}
+                            <div class="alert alert-danger alert-dismissible">
+                              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                              <strong>Invalid!</strong> There is an election for that date. Choose another one.
+                            </div>
+                    {% endif %}
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                            <form method="POST" class="col-md-6" action="{% url 'admin_votemaster_edit_election' id=election.id %}">
+                                <br>
+                                <h3 class="text-center text-muted">Update Election information</h3>
+                                <br>
+                                {% csrf_token %}
+                                    <div class="form-group text-left">
+                                        <label for="disabledTextInput">Description</label>
+                                        <input type="text" class="form-control" value="{{ election.description }}" name="description" required>
+                                    </div>
+                                    <div class="form-group text-left">
+                                        <label for="disabledTextInput">Target Date</label>
+                                        <input type="date" class="form-control" value="{{election.target_date|date:'Y-m-d'}}" required onchange="changeTDate(this.value)" name="target_date">
+                                    </div>
+                                    <div class="form-group text-left">
+                                        <label for="disabledTextInput">Code</label>
+                                        <input type="text" class="form-control" value="{{ election.code }}" id="id_code" name="code" readonly>
+                                    </div>
+                                    <input type="submit" name="save_update" value="Save Changes" class="btn btn-primary">
+                            </form>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <form method="POST" action="/admin_votemaster/attendance/{{ election.id }}">
+                          {% csrf_token %}
+          
+                          <input type="checkbox" onclick="markAll(this.checked)" id="checkAll">
+                          <label for="checkAll">Mark All</label>
+                          <input type="submit" style="float: right;" class="btn btn-primary right" name="save_attendance" value="Save">
+                          <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                              <thead>
+                                  <tr>
+                                      <th>Present</th>
+                                      <th>Full Name</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  {% if count.attendance_count > 0 %}
+          
+                                      {% for at in attendance %}
+                                          {% if at.at_status == 'present' %}
+                                              <tr>
+                                                  <td><input type="checkbox" value="{{ at.sh_id }}" id="{{ at.sh_fullname }}{{ at.sh_id }}" class="at_check" name="stock_holder{{ at.sh_id }}" checked>  </td>
+                                                  <td><label for="{{ at.sh_fullname }}{{ at.sh_id }}">{{ at.sh_fullname }}</label></td>
+                                              </tr>
+                                              {% else %}
+                                              <tr>
+                                                  <td><input type="checkbox" value="{{ at.sh_id }}" id="{{ at.sh_fullname }}{{ at.sh_id }}" class="at_check" name="stock_holder{{ at.sh_id }}"> </td>
+                                                  <td><label for="{{ at.sh_fullname }}{{ at.sh_id }}">{{ at.sh_fullname }}</label></td>
+                                              </tr>
+                                          {% endif %}
+                                      {% endfor %}
+          
+                                      {% else %}
+                                          {% for sh in stock_holder %}
+                                              <tr>
+                                                  <td><input type="checkbox" value="{{ sh.id }}" id="{{ sh.sh_fname }}{{ sh.sh_lname }}{{ sh.id }}" class="at_check" name="stock_holder{{ sh.id }}"> </td>
+                                                  <td><label for="{{ sh.sh_fname }}{{ sh.sh_lname }}{{ sh.id }}">{{ sh.sh_fname }} {{ sh.sh_lname }}</label></td>
+                                              </tr>
+                                          {% endfor %}
+                                  {% endif %}
+                              </tbody>
+                          </table>
+                      </form>
+                    </div>
+                    <div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                        <div class="row">
+                            <div class="col-md-6 bg-light" style="border: 1px solid lightgray;">
+                                <p class="text-muted">Select for nominee here</p>
+                                <br>
+                                <table class="w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Full Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for sh in stock_holder %}
+                                            <tr>
+                                                <td>{{ sh.sh_fname }} {{ sh.sh_lname }}</td>
+                                                <td><a href="/admin_votemaster/nomination/add_nominee/{{ sh.id }}/{{ election.id }}" class="btn btn-primary btn-sm">Nominate</a> </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+            
+                            <div class="col-md-6 bg-light" style="border: 1px solid darkgray;">
+                                <p class="text-muted">List of nominees</p>
+                                <br>
+                                {% if count.nominees_count > 0 %}
+                                    <table class="w-100">
+                                        <thead>
+                                            <tr>
+                                                <th>Full Name</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+            
+                                        <tbody>
+                                            {% for nominee in nominees %}
+                                                <tr>
+                                                    <td> {{ nominee.sh_fullname }}</td>
+                                                    <td> <a href="/admin_votemaster/nomination/delete_nominee/{{ nominee.id }}/{{ election.id }}" class="btn btn-danger btn-sm">Remove</a></td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% else %}
+                                    <p class="alert alert-danger">No nominees for this current election</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return year + month + day ;
+    }
+
+    function changeTDate(d) {
+        election_code = "BOD-" + formatDate(d);
+        id_code.value = election_code;
+    }
+
+    function markAll(checked) {
+        var checkBoxes = document.getElementsByClassName("at_check");
+        if (checked) {
+            for (var i = 0; i < checkBoxes.length; i++) {
+                checkBoxes[i].checked = "true";
+            }
+        }
+    }
+
+
+    var checkBoxes = document.getElementsByClassName("at_check");
+    for (var i = 0; i < checkBoxes.length; i++) {
+
+        checkBoxes[i].addEventListener("change", function(){
+            var check = document.getElementsByClassName("at_check");
+            for (var x = 0; x < check.length; x++) {
+                if (check[x].checked == false) {
+                    document.getElementById("checkAll").checked = false;
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

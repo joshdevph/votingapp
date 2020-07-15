@@ -1,231 +1,293 @@
 {% extends 'admin/main.html' %}
 {% load staticfiles %}
 {% block content %}
-        <!-- page content -->
-        <div class="right_col" role="main">
-          <div class="">
 
+<div class="right_col" role="main">
+  <div class="">
+
+    <div class="page-title">
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Stockholder<small>Master List</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><button class="btn btn-sm btn-round btn-primary pl-4 pr-4 " data-toggle="modal" data-target="#exampleModalCenter"> Create <i class="ti ti-plus pl-2"></i> </button></a>
+              </li>
+            </ul>
             <div class="clearfix"></div>
-
+          </div>
+          <div class="x_content">
             <div class="row">
-              <div class="col-md-12 col-sm-12 ">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Stockholder<small>Master List</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
+              <!-- STOCKHOLDER DATA TABLE -->
 
-                      <li><button class="btn btn-sm btn-round btn-primary pl-4 pr-4 " data-toggle="modal" data-target="#exampleModalCenter"> Create <i class="ti ti-plus pl-2"></i> </button></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                      <div class="row">
-                          <div class="col-sm-12">
-                            <div class="card-box table-responsive">
+              <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>Profile Picture</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Position</th>
 
-					
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                      <thead>
-                        <tr>
-                          <th>Action</th>
-                          <th>Profile Picture</th>
-                          <th>First name</th>
-                          <th>Last name</th>
-                          <th>Position</th>
+                    <th>E-mail</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!--  ******************** NOTE **********************-->
+                  <!-- Dont remove the delete and update Modals Inside the STOCKHOLDER DATA TABLE comments -->
+                  {% for list in sh_list %}
+                  <tr>
+                    <td>
+                      <button class="btn btn-sm btn-round btn-danger pl-4 pr-4 "  data-toggle="modal" data-target="#delete{{ list.id }}" data-id="{{ list.id }}">Delete</button>
+                      <button class="btn btn-sm btn-round btn-success pl-4 pr-4 " data-toggle="modal" data-target="#update{{ list.id }}" data-id="{{ list.id }}">Update</button>
+                    </td>
+                    <td> <img src="{{list.company_images}}" alt="" class="avatar avatar-128 img-circle "></p></td>
+                    <td>{{list.sh_fname}}</td>
+                    <td>{{list.sh_lname}}</td>
+                    <td>{{list.sh_position}}</td>
+                    <td>{{list.sh_email}}</td>
+                  </tr>
+                                <!-- DELETE STOCKHOLDER  MODAL -->
+                                <div class="modal fade" id="delete{{ list.id }}">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Delete Stockholder</h5>
+                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                            </div>
+                                            <form action="{% url 'delete_stockholder' pk=list.id %}" method="POST">
+                                              {% csrf_token %}
+                                            <div class="modal-body">
+                                                <p>Are you sure to Delete this Data?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-xs btn-round btn-secondary pl-4 pr-4" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-xs btn-round btn-danger pl-4 pr-4">Confirm</button>
+                                            </div>
+                                            </form> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END DELETE STOCKHOLDER MODAL -->
 
-                          <th>E-mail</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for list in sh_list %}
+
+                                <!-- UPDATE STOCKHOLDER MODAL -->
+                                <div class="modal fade bd-example-modal-lg" id="update{{ list.id }}">
+                                  <div class="modal-dialog modal-lg">
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                              <h5 class="modal-title">Update Stockholder</h5>
+                                              <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                          </div>
+                                          <div class="modal-body">
+
+                                            <form class="form-label-left input_mask m-2" action="{% url 'update_stockholder' pk=list.id %}" method="POST" enctype="multipart/form-data">
+                                              {% csrf_token %}
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <label for="fullname">Edited By:</label>
+                                                <input type="text" class="form-control" name="edited_by" required>
+                                              </div>  
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <label for="lastname">Shares</label>
+                                                <input type="text" class="form-control" name="sh_shares"  value="{{list.sh_shares}}">
+                                              </div>
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <label for="lastname">First Name</label>
+                                                <input type="text" class="form-control" name="sh_fname"  value="{{list.sh_fname}}">
+                                                
+                                              </div>
                           
-                        
-                        <tr>
-                          <td>
-                            <button class="btn btn-sm btn-round btn-danger pl-4 pr-4 "  data-toggle="modal" data-target="#delete{{ list.id }}" data-id="{{ list.id }}">Delete</button>
-                            <button class="btn btn-sm btn-round btn-success pl-4 pr-4 " data-toggle="modal" data-target="#update{{ list.id }}" data-id="{{ list.id }}">Update</button>
-                          </td>
-                          <td> <img src="{% static 'images/author/avatar.png' %} " alt="" class="justify-content-center"></td>
-                          <td>{{list.sh_fname}}</td>
-                          <td>{{list.sh_lname}}</td>
-                          <td>{{list.sh_position}}</td>
-                          <td>{{list.sh_email}}</td>
-                        </tr>
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <label for="fullname">Last Name </label>
+                                                <input type="text" class="form-control" name="sh_lname" value="{{list.sh_lname}}">
+                                              </div>
+                          
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <label for="fullname">Middle Name</label>                       
+                                                <input type="text" class="form-control" name="sh_mname" value="{{list.sh_mname}}">
 
+                                              </div>
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <label for="lastname">Mobile No.</label>
+                                                <input type="text" class="form-control" name="mobile_no" value="{{list.mobile_no}}">
+                                              </div>
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <label for="fullname">Email</label>
+                                                <input type="email" class="form-control" name="sh_email" value="{{list.sh_email}}">
+                                              </div>
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <label for="fullname">Position</label>
+                                                <input type="text" class="form-control" name="sh_position" value="{{list.sh_position}}">
+                                              </div>
 
-                        <!-- DELETE MODAL -->
-                        <div class="modal fade" id="delete{{ list.id }}">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Delete Stockholder</h5>
-                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                                    </div>
-                                    <form action="{% url 'delete_stockholder' pk=list.id %}" method="POST">
-                                      {% csrf_token %}
-                                    <div class="modal-body">
-                                        <p>Are you sure to Delete this Data?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-xs btn-round btn-secondary pl-4 pr-4" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-xs btn-round btn-danger pl-4 pr-4">Confirm</button>
-                                    </div>
-                                    </form> 
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END of DELETE MODAL -->
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <img src="{{list.company_images}}" alt="" id="filePreview2" class="thumbnail">
+                                                <input type="file" class="form-control border-0" name="company_images" id="company_images" value="{{list.company_images}}" >
 
-
-                        <!-- CREATE MODAL -->
-                        <div class="modal fade bd-example-modal-lg" id="update{{ list.id }}">
-                          <div class="modal-dialog modal-lg">
-                              <div class="modal-content">
-                                  <div class="modal-header">
-                                      <h5 class="modal-title">Update Stockholder</h5>
-                                      <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                              </div>
+                          
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <label for="fullname">Proxy First Name</label>
+                                                <input type="text" class="form-control" name="sh_proxy_fname" value="{{list.sh_proxy_fname}}">
+                                              </div>
+                          
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <label for="fullname">Proxy Last Name</label>
+                                                <input type="text" class="form-control" name="sh_proxy_lname" value="{{list.sh_proxy_lname}}">
+                                                
+                                              </div>
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <label for="fullname">Proxy Middle Name</label>
+                                                <input type="text" class="form-control" name="sh_proxy_mname" value="{{list.sh_proxy_mname}}">
+                                              </div> 
+                                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                                <label for="fullname">Proxy Email</label>
+                                                <input type="text" class="form-control" name="sh_proxy_email" value="{{list.sh_proxy_email}}">
+                                              </div>
+        
+                                        </div>
+                                          <div class="modal-footer">
+                                              <button type="button" class="btn btn-round btn-sm btn-secondary pl-4 pr-4" data-dismiss="modal">Close</button>
+                                              <button type="submit" class="btn btn-round btn-sm btn-primary pl-4 pr-4">Save</button>
+                                          </div>
+                                        </form>
+                                      </div>
                                   </div>
-                                  <div class="modal-body">
-
-                                    <form class="form-label-left input_mask m-2" action="{% url 'update_stockholder' pk=list.id %}" method="POST" enctype="multipart/form-data">
-                                      {% csrf_token %}
-                                      <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                        <label for="lastname">First Name</label>
-                                        <input type="text" class="form-control" name="sh_fname"  value="{{list.sh_fname}}">
-                                        
-                                      </div>
-                  
-                                      <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                        <label for="fullname">Last Name </label>
-                                        <input type="text" class="form-control" name="sh_lname" value="{{list.sh_lname}}">
-                                      </div>
-                  
-                                      <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                        <label for="fullname">Middle Name</label>                       
-                                        <input type="text" class="form-control" name="sh_mname" value="{{list.sh_mname}}">
-
-                                      </div>
-                                      <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                        <label for="fullname">Email</label>
-                                        <input type="email" class="form-control" name="sh_email" value="{{list.sh_email}}">
-                                      </div>
-                                      <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                        <label for="fullname">Position</label>
-                                        <input type="text" class="form-control" name="sh_position" value="{{list.sh_position}}">
-                                      </div>
-
-                                      <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                        <label for="fullname">Photo</label>
-                                        <input type="file" class="form-control" name="company_images" >
-                                      </div>
-                  
-                                      <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                        <label for="fullname">Proxy First Name</label>
-                                        <input type="text" class="form-control" name="sh_proxy_fname" value="{{list.sh_proxy_fname}}">
-                                      </div>
-                  
-                                      <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                        <label for="fullname">Proxy Last Name</label>
-                                        <input type="text" class="form-control" name="sh_proxy_lname" value="{{list.sh_proxy_lname}}">
-                                        
-                                      </div>
-                                      <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                        <label for="fullname">Proxy Middle Name</label>
-                                        <input type="text" class="form-control" name="sh_proxy_mname" value="{{list.sh_proxy_mname}}">
-                                      </div>          
                                 </div>
-                                  <div class="modal-footer">
-                                      <button type="button" class="btn btn-round btn-sm btn-secondary pl-4 pr-4" data-dismiss="modal">Close</button>
-                                      <button type="submit" class="btn btn-round btn-sm btn-primary pl-4 pr-4">Save</button>
-                                  </div>
-                                </form>
+                                <!-- END UPDATE STOCKHOLDER MODAL -->
+                                {% endfor %}
+
+
+                  
+                </tbody>
+
+              </table>
+              <!-- END STOCKHOLDER DATA TABLE -->
+
+
+              <!-- THIS IS FOR FORM VALIDATION IF SAVING HAS AN ERROR -->
+              {% if user_form.errors %}
+              <a href="#" class="" hidden id="error">{{user_form.errors}}</a>
+              {% else %}
+              <a href="#" class="" hidden id="no">{{user_form.errors}}</a>
+              {% endif %}
+                
+              
+              
+              
+                <!-- CREATE STOCKHOLDER MODAL -->
+                <div class="modal fade bd-example-modal-lg" id="exampleModalCenter">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title">Create Stockholder</h5>
+                              <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                          </div>
+                          <div class="modal-body">
+
+
+
+
+                            <form class="form-label-left input_mask m-2" action="{% url 'admin_stockholder' %}" method="POST" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label for="lastname">Shares</label>
+                              {{ form.sh_shares }}
                               </div>
-                          </div>
-                        </div>
-                      <!-- CREATE MODAL -->
-                        {% endfor %}
-                      </tbody>
-                    </table>
-					        <!-- CREATE MODAL -->
-                  <div class="modal fade bd-example-modal-lg" id="exampleModalCenter">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Create Stockholder</h5>
-                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                            </div>
-                            <div class="modal-body">
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label for="lastname">User Name</label>
+                              {{ user_form.username }}
+                              </div>
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label for="lastname">First Name</label>
+                                {{ form.sh_fname }}
+                              </div>
           
-                              <form class="form-label-left input_mask m-2" action="{% url 'admin_stockholder' %}" method="POST" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                  <label for="lastname">User Name</label>
-                                 {{ user_form.username }}
-                                </div>
-                                <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                  <label for="lastname">First Name</label>
-                                  {{ form.sh_fname }}
-                                </div>
-            
-                                <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                  <label for="fullname">Last Name </label>
-                                  {{ form.sh_lname }}
-                                </div>
-            
-                                <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                  <label for="fullname">Middle Name</label>                       
-                                  {{ form.sh_mname }}
-                                </div>
-                                <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                  <label for="fullname">Email</label>
-                                  {{ form.sh_email }}
-                                </div>
-                                <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                  <label for="fullname">Position</label>
-                                  {{ form.sh_position }}
-                                </div>
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label for="fullname">Last Name </label>
+                                {{ form.sh_lname }}
+                              </div>
           
-                                <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                  <label for="fullname">Photo</label>
-                                  {{ form.company_images }}
-                                </div>
-            
-                                <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                  <label for="fullname">Proxy First Name</label>
-                                  {{ form.sh_proxy_fname }}
-                                </div>
-            
-                                <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                  <label for="fullname">Proxy Last Name</label>
-                                  {{ form.sh_proxy_lname }}
-                                </div>
-                                <div class="col-md-6 col-sm-6  form-group has-feedback">
-                                  <label for="fullname">Proxy Middle Name</label>
-                                  {{ form.sh_proxy_mname }}
-                                </div>          
-                          </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-round btn-sm btn-secondary pl-4 pr-4" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-round btn-sm btn-primary pl-4 pr-4">Save</button>
-                            </div>
-                          </form>
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label for="fullname">Middle Name</label>                       
+                                {{ form.sh_mname }}
+                              </div>
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label for="lastname">Mobile No.</label>
+                              {{ form.mobile_no }}
+                              </div>
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label for="fullname">Email</label>
+                                {{ form.sh_email }}
+                              </div>
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label for="fullname">Position</label>
+                                {{ form.sh_position }}
+                              </div>
+        
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <img src="{% static 'images/author/user.jpg' %}" alt="" id="filePreview" class="thumbnail">
+                                {{ form.company_images }}
+                              </div>
+                              
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label for="fullname">Proxy First Name</label>
+                                {{ form.sh_proxy_fname }}
+                                
+                              </div>
+          
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label for="fullname">Proxy Last Name</label>
+                                {{ form.sh_proxy_lname }}
+                              </div>
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label for="fullname">Proxy Middle Name</label>
+                                {{ form.sh_proxy_mname }}
+                              </div>
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                <label for="fullname">Proxy Email</label>
+                                {{ form.sh_proxy_email }}
+                              </div> 
+    
                         </div>
-                    </div>
-                  </div>
-                <!-- CREATE MODAL -->
-					
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-round btn-sm btn-secondary pl-4 pr-4" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-round btn-sm btn-primary pl-4 pr-4">Save</button>
+                          </div>
+                        </form>
+                      </div>
                   </div>
                 </div>
-              </div>
-            </div>
-                </div>
-              </div>
+                <!-- END CREATE STOCKHOLDER MODAL -->
             </div>
           </div>
         </div>
-        <!-- /page content -->
+      </div>
+    </div>
+  </div>
+</div>
 
 
+        
+<!-- SCRIPT FOR NOTIFICATIONS -->
+<script>
+var err = document.getElementById("error");
+if (err){
+  $(document).ready(function() {
+      (new PNotify({
+          title: 'ERROR',
+          text: 'Username is already taken',
+          type: 'error',
+          styling: 'bootstrap3',
+      }));
+  });
+}
+  
+</script>
 
 {% endblock %}
