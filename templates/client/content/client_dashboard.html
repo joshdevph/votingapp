@@ -1,0 +1,44 @@
+{% extends 'client/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="card-area">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mt-5">
+            <div class="card card-bordered">
+                <img class="card-img-top img-fluid" src="{% static 'images/card/card-img5.jpg' %}" alt="image">
+                <div class="card-body">
+                    
+                    <div class="submit-btn-area">
+                        <a href="/">
+                        <button id="form_submit" type="submit">Stockholders <i class="ti-arrow-right"></i></button>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mt-5">
+            <div class="card card-bordered">
+                <img class="card-img-top img-fluid" src="{% static 'images/card/card-img5.jpg' %}" alt="image">
+                <div class="card-body">
+                    <div class="submit-btn-area">
+                        <button id="form_submit" type="submit">Elections <i class="ti-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mt-5">
+            <div class="card card-bordered">
+                <img class="card-img-top img-fluid" src="{% static 'images/card/card-img5.jpg' %}" alt="image">
+                <div class="card-body">
+                    <div class="submit-btn-area">
+                        <button id="form_submit" type="submit">Votes <i class="ti-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
