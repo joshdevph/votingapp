@@ -1,5 +1,5 @@
 from django import forms
-from .models import EBallot
+from .models import EBallot, StockholderVote
 from apps.admin_votemaster.models import Election, Attendance
 
 class SelectElection(forms.ModelForm):
@@ -35,4 +35,16 @@ class EBallotForm(forms.ModelForm):
         self.fields['eballot_batch_id'].widget.attrs.update({'class': 'form-control'})
         self.fields['eballot_num'].widget.attrs.update({'class': 'form-control'})
         self.fields['sh_fullname'].widget.attrs.update({'class': 'form-control'})
+        
+class VotersForm(forms.ModelForm):
+    class Meta:
+        model = StockholderVote
+        fields = ('vote_pts', )
+        vote_pts = forms.IntegerField( 
+            widget = forms.NumberInput(attrs={
+            'name' : 'vote_pts',
+            'class' : 'form-control', 
+            'placeholder' : 'Enter vote'    
+        })
+        )
         

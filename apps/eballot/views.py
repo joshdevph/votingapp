@@ -1,18 +1,22 @@
 from django.shortcuts import render, redirect
+from django.db.models import Q, Sum
 import datetime, uuid
 from django.utils.crypto import get_random_string
-from .forms import SelectElection, EBallotForm
+from .forms import SelectElection, EBallotForm, VotersForm
 from .models import EBallot, EBallotBatch, EBallotNum, StockholderVote
 from apps.admin_votemaster.models import Attendance, Election, Nominee
 from apps.admin_newstockholder.models import StockHolder
 
 # Create your views here.
 def select_election(request):
-    #Fetch all stakeholders present as voters
-    voters_list = Attendance.objects.all()
-
     #Select all election create
     election_code_list = Election.objects.all()
+    election_code_list = election_code_list.filter(status = 'pending')
+   
+    #Fetch all stakeholders present as voters
+    voters_list = Attendance.objects.all()
+    voters_list = voters_list.filter(election_status = 0, at_status = 'present')
+
     form = SelectElection()
 
     return render(request, 'admin/content/admin_select_election.html', {'form' : form, 'election_code_list' : election_code_list, 'voters_list' : voters_list})
@@ -22,11 +26,10 @@ def create_eballot(request):
 
     #Request data from modal
     election_code = request.POST['code'] 
-    sh_id = request.POST['sh_id']
   
     #Filter voters list by election code
     voters_list = Attendance.objects.all()
-    voters_list = voters_list.filter(election_code = election_code)
+    voters_list = voters_list.filter(election_code = election_code, election_status = 0, at_status = 'present')
     
     #Create eballot batch id
     dt = datetime.datetime.now()
@@ -43,16 +46,19 @@ def create_eballot(request):
         eballot_num = EBallotNum.objects.create(eballot_num = eballot_num)
 
         eballot_num_entry = EBallotNum.objects.get(eballot_num = eballot_num)
-        sh_id_entry = Attendance.objects.get(sh_id = name.sh_id)
 
         EBallot.objects.create(election_code = name.election_code,                              
                                 eballot_num = eballot_num_entry,    
                                 eballot_batch_id = eballot_batch_id_entry, 
-                                sh_id = sh_id_entry,
-                                sh_fullname = name.sh_fullname                  
+                                sh_id = name.sh_id,
+                                sh_fullname = name.sh_fullname,
+                                vote_allocated = name.sh_shares,
+                                remain_vote = name.sh_shares            
                                 )
+        Attendance.objects.filter(election_code = name.election_code).update(election_status = 1)
+        Election.objects.filter(code = name.election_code).update(status = 'active')
 
-    return render(request, 'admin/content/admin_dashboard.html')
+    return redirect('eballot_list')
 
 def eballot_list(request):
     #Fetch all eballot form to list
@@ -61,23 +67,92 @@ def eballot_list(request):
     return render(request, 'admin/content/admin_eballot_list.html', {'eballot' : eballot})
 
 def eballot_form(request, id):
-    #Fetch data from eBallot pass to template
-    eballot_form = EBallot.objects.all()
-    eballot_form = EBallot.objects.filter(eballot_num_id = int(id))
+    eballot = EBallot.objects.all()
+    eballot = eballot.filter(eballot_num_id = int(id))
+    eballot_data = EBallot.objects.get(eballot_num_id = int(id))
 
-    #Get election_code field from EBallot model
-    code = EBallot.objects.only('election_code').get(eballot_num_id = int(id)).election_code
-    sh_id = EBallot.objects.only('sh_id').get(eballot_num_id = int(id)).sh_id
+    election = Election.objects.all()
+    election_desc = election.filter(code = eballot_data.election_code).values_list('description', flat=True)[0]
 
-    #Fetch data from Nominee filtered by election code
-    nominees = Nominee.objects.all()
-    nominees = nominees.filter(election_code = code)
+    nominee = Nominee.objects.all()
+    nominee = nominee.filter(election_code = eballot_data.election_code)
 
-    form = EBallotForm()
+    stockholdervote = StockholderVote.objects.all()
+    stockholdervote = stockholdervote.filter(election_code = eballot_data.election_code, eballot_num = eballot_data.eballot_num)
 
-    return render(request, 'eballot_form/content/form.html', {'form' : form, 'eballot_form' : eballot_form, 'stockholder_list' : stockholder_list})
+    form = VotersForm()
+
+    return render(request, 'eballot_form/content/form.html', {
+        'form' : form, 
+        'nominee' : nominee, 
+        'eballot_data' : eballot_data,
+        'election_desc' : election_desc,
+        'stockholdervote' : stockholdervote,
+        'count' : {
+            'nominee_count' : nominee.count(),
+            'stockholdervote_count' : stockholdervote.count()
+        }
+        })
 
 
-def save_vote(request, id):
+def cast_vote(request, id):
+    
+    vote_pts = request.POST.get('vote_pts')
 
-    return 
+    eballot = EBallot.objects.all() # select Eballot model
+    eballot = eballot.filter(eballot_num_id = int(id)) # filter eballot_num in Eballot model
+    eballot_data = EBallot.objects.get(eballot_num_id = int(id)) # get objects inside Eballot
+    
+    remain_vote = eballot_data.remain_vote #Fetch remaing vote allocation
+    remain_vote = int(remain_vote) - int(vote_pts)
+    EBallot.objects.filter(eballot_num_id = int(id)).update(remain_vote = remain_vote)
+
+    # select StockholderVote model
+    stockholder_vote = StockholderVote.objects.all()
+   
+    if request.method == 'POST': # check for post
+        StockholderVote.objects.create(
+            election_code = request.POST.get('election_code'),
+            eballot_num = request.POST.get('eballot_num'),
+            sh_fullname = request.POST.get('sh_fullname'),
+            sh_id = request.POST.get('sh_id'),
+            vote_pts = request.POST.get('vote_pts')
+        )
+            
+    return redirect('eballot_form', id=eballot_data.eballot_num_id) # redirect to same page with id as param
+
+def cast_remove(request, id, sh_id):
+    eballot = EBallot.objects.all()
+    eballot = EBallot.objects.filter(sh_id_id = sh_id)
+
+    eballot_data = EBallot.objects.get(sh_id_id = sh_id)
+    StockholderVote.objects.filter(id=id).delete()
+
+    return redirect('eballot_form', id=eballot_data.eballot_num_id)
+
+def result(request):
+    election = Election.objects.all()
+    election = election.filter(status = 'Active')
+    election_data = Election.objects.get(status = 'Active')
+
+    result = StockholderVote.objects.all()
+    result = result.filter(election_code = election_data.code).order_by('sh_fullname').annotate(votes_pts=Sum('vote_pts'))
+    
+    return render(request, 'admin/content/admin_result.html', { 'result' : result })
+
+def update_elected(request, id):
+    election = Election.objects.all()
+    election = election.filter(status = 'Active')
+    election_data = Election.objects.get(status = 'Active')
+
+    nominee = Nominee.objects.all()
+    nominee = nominee.filter(sh_fullname = id)
+    nominee_data = nominee.get(sh_fullname = id)
+
+    stockholder = StockHolder.objects.all()
+    stockholder = stockholder.filter(id = nominee_data.sh_id).update(sh_position = 'Board of Director')
+
+    result = StockholderVote.objects.all()
+    result = result.filter(election_code = election_data.code).order_by('sh_fullname').annotate(votes_pts=Sum('vote_pts'))
+    
+    return render(request, 'admin/content/admin_result.html', { 'result' : result })

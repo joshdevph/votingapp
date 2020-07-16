@@ -18,10 +18,16 @@ class EBallot(models.Model):
     election_code = models.CharField(max_length=250, null=False)
     eballot_batch_id = models.ForeignKey(EBallotBatch, on_delete=models.CASCADE, null=False)
     eballot_num = models.ForeignKey(EBallotNum, on_delete=models.CASCADE, null=False)
-    sh_id = models.ForeignKey(Attendance, on_delete=models.CASCADE, null=False)
+    sh_id = models.CharField(max_length=250, null=False)
     sh_fullname= models.CharField(max_length=250, null=False)
+    vote_allocated = models.CharField(max_length=250, null=False)
+    remain_vote = models.CharField(max_length=250, null=False)
+    company_images = models.FileField(upload_to='Media_Files/StockHolder_Profile_Picture')
+  
 
 class StockholderVote(models.Model):
+    election_code = models.CharField(max_length=250, null=False)
+    eballot_num = models.CharField(max_length=250, null=False)
     sh_id = models.CharField(max_length=250, null=False)
     sh_fullname= models.CharField(max_length=250, null=False)
     vote_pts = models.IntegerField(default=0, null=False)
