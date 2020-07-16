@@ -30,6 +30,7 @@
     <!-- Custom Theme Style -->
     <link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/wizard.css' %}">
     <!-- Datatables -->
     
     <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
@@ -86,9 +87,11 @@
         <!-- /top navigation -->
 
         <!-- page content -->
-        {% block content %}
-          
-        {% endblock content %}
+
+
+            {% block content %}
+            {% endblock content %}
+        
         <!-- /page content -->
 
         <!-- footer content -->
@@ -137,7 +140,8 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{% static 'build/js/custom.min.js' %}"></script>
-    
+    <script src="{% static 'js/wizard.js' %}"></script>
+
     <!-- Datatables -->
     <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
@@ -159,6 +163,9 @@
     <script src="{% static 'vendors/pnotify/dist/pnotify.js' %}"></script>
     <script src="{% static 'vendors/pnotify/dist/pnotify.buttons.js' %}"></script>
     <script src="{% static 'vendors/pnotify/dist/pnotify.nonblock.js' %}"></script>
+
+    <!-- jQuery Smart Wizard -->
+    <script src="{% static 'vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js' %}"></script>
 
 
     <!-- Preview ADD MODAL Image Javascript -->

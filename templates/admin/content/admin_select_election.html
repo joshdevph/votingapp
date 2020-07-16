@@ -41,7 +41,7 @@
                               <td>{{list.description}}</td>
                               <td>{{list.date_added}}</td>
                               <td>
-                              <button class="btn btn-sm btn-round btn-success pl-4 pr-3 " data-toggle="modal" data-target="#update{{ list.id }}" data-id="{{ list.id }}">Proceed</button>           
+                              <button class="btn btn-md btn-round btn-success pl-4 pr-3 fa fa-circle-o-notch" data-toggle="modal" data-target="#update{{ list.id }}" data-id="{{ list.id }}"> Generate</button>           
                               </td>
                             </tr>  
 
@@ -58,24 +58,27 @@
                                           <form class="form-label-left input_mask m-2" action="{% url 'create_eballot' %}" method="POST">
                                             {% csrf_token %}
                                            <input type="hidden" class="form-control" name="code"  value="{{list.code}}" readonly>
-                                                    <div class="col-md-4 col-sm-3  form-group has-feedback">
-                                                        <label for="lastname">Stockholders ID</label>
-                                                    </div>
+                                                 
                                                     <div class="col-md-6 col-sm-6  form-group has-feedback">
                                                         <label for="lastname">Stockholders Name</label>
                                                     </div>
+                                                    <div class="col-md-4 col-sm-3  form-group has-feedback">
+                                                      <label for="lastname">Stockholders Email Address</label>
+                                                  </div>
                                                     {% for name in voters_list %}
-                                                        <div class="col-md-4 col-sm-3  form-group has-feedback">
-                                                            <input type="text" class="form-control" name="sh_id"  value="{{name.sh_id}}" readonly>
-                                                        </div>
+                                                      
                                                         <div class="col-md-6 col-sm-6  form-group has-feedback">
                                                             <input type="text" class="form-control" name="sh_fullname"  value="{{name.sh_fullname}}" readonly>
                                                         </div>
+                                                        <div class="col-md-4 col-sm-3  form-group has-feedback">
+                                                          <input type="text" class="form-control" name="sh_email"  value="{{name.sh_email}}" readonly>
+                                                      
+                                                      </div>
                                                     {% endfor %}      
                                       </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-round btn-sm btn-secondary pl-4 pr-4" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-round btn-sm btn-primary pl-4 pr-4">Save</button>
+                                            <button type="submit" class="btn btn-round btn-sm btn-primary pl-4 pr-4">Send EBallot</button>
                                         </div>
                                       </form>
                                     </div>

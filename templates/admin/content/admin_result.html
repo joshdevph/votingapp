@@ -1,0 +1,70 @@
+{% extends 'admin/main.html' %}
+{% load staticfiles %}
+{% block content %}
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Stockholder<small>Master List</small></h2>
+                    <ul class="nav navbar-right panel_toolbox"></ul>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <div class="row">
+                          <div class="col-sm-12">
+                            <div class="card-box table-responsive">
+
+
+                    <!-- STOCKHOLDER DATA TABLE -->
+
+                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th>Election Code</th>
+                          <th>Nominee Name</th>
+                          <th>Total Vote</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!--  ******************** NOTE **********************-->
+                        <!-- Dont remove the delete and update Modals Inside the STOCKHOLDER DATA TABLE comments -->
+                        {% for res in result %}
+                        <tr>
+                        <form method="POST" action="update_elected/{{res.sh_fullname}}">
+
+                        {% csrf_token %}
+                          <td>{{res.election_code}}</td>
+                          <td>{{res.sh_fullname}}</td>
+                          <td style="text-align:right">{{res.votes_pts}}</td>
+                          <td><input type='submit' class="btn btn-success col-md-6 btn-sm" value='Update' style="float: left;"></td>
+                        </tr>
+                         </form>
+                        {% endfor %}
+         
+                      </tbody>
+
+                    </table>
+                    <!-- END STOCKHOLDER DATA TABLE -->
+			
+                  </div>
+                </div>
+              </div>
+            </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+
+        <div class="clearfix"></div>
+
+
+{% endblock %}
