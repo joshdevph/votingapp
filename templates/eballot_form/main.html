@@ -51,38 +51,29 @@
       <div class="main_container ">
         <div class="col-md-3 left_col menu_fixed">
           <div class="left_col scroll-view">
-            <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title pl-0 mb-1"><img src="{% static 'images/icon/acemc-logo.png'%}" alt=""></a>
+            <div class="navbar nav_title" style="padding: 10px;">
+              <a class="site_title pl-0 mb-1"><img src="{% static 'images/icon/acemc-logo.png'%}" alt=""></a>
             </div>
 
             <div class="clearfix"></div>
 
-            <!-- menu profile quick info -->
-            <div class="profile clearfix">
-              <div class="profile_pic">
-                <img src="{% static 'images/author/avatar.png' %} " alt="..." class="img-circle profile_img">
-              </div>
-              <div class="profile_info">
-                <span>Welcome,</span>
-                <h2>John Doe</h2>
-              </div>
-            </div>
+           
             <!-- /menu profile quick info -->
 
             <br />
 
             <!-- sidebar menu -->
-            {% include "admin/side_nav.html" %}
+            {% include "eballot_form/side_nav.html" %}
             <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->
-            {% include "admin/side_nav_footer.html" %}
+            {% include "eballot_form/side_nav_footer.html" %}
             <!-- /menu footer buttons -->
           </div>
         </div>
 
         <!-- top navigation -->
-        {% include "admin/top_bar.html" %}
+        {% include "eballot_form/top_bar.html" %}
         <!-- /top navigation -->
 
         <!-- page content -->

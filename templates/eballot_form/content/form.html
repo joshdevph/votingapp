@@ -1,4 +1,4 @@
-{% extends 'admin/main.html' %}
+{% extends 'eballot_form/main.html' %}
 {% load static %}
 {% block content %}
 <div class="right_col" role="main">
@@ -6,7 +6,7 @@
       <div class="clearfix"></div>
 
       <div class="row" style="display: block;">
-      	<div class="row">
+        <div class="row">
           <div class="col-md-12">
             <div class="x_panel">
             <div class="x_title">
@@ -14,77 +14,113 @@
               <div class="clearfix"></div>
             </div>
 
-            {% for data in eballot_form %}
-              {% csrf_token %}
               <div class="row">
                 <div class="col-md-6">
-                <p class="lead"><small>Election Code:</small> {{ data.election_code }}</p>
+                <p class="lead"><small><b>Election code:</b>  {{ eballot_data.election_code }} </small></p>
                 </div>
 
                 <div class="col-md-6">
-                <p class="lead"><small>EBallot Batch ID:</small> {{ data.eballot_batch_id }}</p>
+                <p class="lead"><small><b>EBallot Batch ID:</b> {{ eballot_data.eballot_batch_id }}</small></p>
                 </div>
 
                 <div class="col-md-6">
-                <p class="lead"><small>Vote Description:</small>{{ data.description }}</p>
+                <p class="lead"><small><b>Vote Description:</b> {{ election_desc }}</small></p>
                 </div>
 
                 <div class="col-md-6">
-                <p class="lead"><small>EBallot No:</small> {{ data.eballot_num }}</p>
+                <p class="lead"><small><b>EBallot No:</b> {{ eballot_data.eballot_num }}</small></p>
                 </div>
 
                 <div class="col-md-6">
-                <p class="lead"><small>Stockholder/Proxy Name:</small> {{ data.sh_fullname }}</p>
+                <p class="lead"><small><b>Stockholder/Proxy Name:</b> {{ eballot_data.sh_fullname }} </small></p>
                 </div>
                 <div class="col-md-6">
-                <p class="lead"><small>Total Potential Vote Points:</small></p>
+                <p class="lead"><small><b>Total Potential Vote Points:</b> {{ eballot_data.vote_allocated }} </small></p>
                 </div>
               </div>
-              {% endfor %}
+            
             </div>
             </div>
           </div>
 
 
-        <div class="col-md-12 col-sm-12  ">
+        <div class="col-md-7 col-sm-7  ">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Nominees</h2>
+                <h2>Nominee <small style='text-align: center; margin-left: 300px;'>Remaining vote:</small> <b>{{ eballot_data.remain_vote }}</b></h2>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-            <!-- Table start  -->
-            <table class="table table-hover">
-              <thead>
-                  <tr> 
-                      <th>Nominee Name</th>
-                      <th>Vote</th>
-                      <th>Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                
-                      <tr>         
-                          <td>
-                          <select class="form-control" name="sh_fullname">
-                            <option>-- Select Nominee --</option>
-                            {% for result in nominees %}
-                            <option  value="{{ result.sh_fullname }}">
-                              {{ result.sh_id }} | {{ result.sh_fullname }}     
-                            </option>         
-                            {% endfor %}
-                          </select>
-                          </td>
-                          <td><input type='number' placeholder='Vote' class="form-control col-md-6 name="vote_pts"></td>
-                          <td> <a href="#" class="btn btn-success btn-sm">Vote</a></td>
-                      </tr>
-                 
-              </tbody>
-          </table>
-            <!-- Table end --> 
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Full Name</th>
+                            <th>Vote</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        {% for name in nominee %}
+                        <form method="POST" action="cast_vote/{{eballot_data.eballot_num_id}}">
+                            <tr>
+                             
+                              {% csrf_token %}
+                                <!-- Stockholders vote details -->
+                                <input type='hidden' class='form-control' name='election_code' value='{{ eballot_data.election_code }}'>
+                                <input type='hidden' class='form-control' name='eballot_num' value='{{ eballot_data.eballot_num }}'>
+                                <input type='hidden' class='form-control' name='sh_id' value='{{ eballot_data.sh_id }}'>
+                                 
+                                <!-- Nominee vote details -->
+                                <td> <img src="{{ name.company_images }}" alt="" class="avatar avatar-150 img-circle "></td> 
+                                <td><input type='text' class='form-control' name='sh_fullname' value='{{ name.sh_fullname }}' readonly></td>
+                                <td><input type='number' class='form-control col-md-9' name='vote_pts'></td>
+                                <td><input type='submit' class="btn btn-primary btn-sm" value='Cast'></td>
+                            </tr>
+                          </form>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
           </div>
         </div>
+
+        <div class="col-md-5 col-sm-5  ">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Vote Cast</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                {% if count.stockholdervote_count > 0 %}
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Vote Casted</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                
+                        <tbody>
+                            {% for res in stockholdervote %}
+                                <tr>
+                                    <td>{{ res.sh_fullname }}</td>
+                                    <td>{{ res.vote_pts }}</td>
+                                    <td> <a href='cast_remove/{{ res.id }} {{ res.sh_id }}' class="btn btn-danger btn-sm">Remove Vote</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="alert alert-danger">No vote casted</p>
+                {% endif %}
+
+            </div>
+          </div>
+        </div>
+
         <div class="clearfix"></div>
 
       </div>
