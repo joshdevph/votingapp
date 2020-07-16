@@ -11,6 +11,8 @@ from django.core.files.storage import FileSystemStorage
 import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.utils.datastructures import MultiValueDictKeyError
+
 # Create your views here.
 
 
@@ -31,6 +33,8 @@ def admin_stockholder(request):
             user.save()
             account_user = user.id
     
+            sh_shares = request.POST.get("sh_shares")
+            mobile_no = request.POST.get("mobile_no")
             sh_fname = request.POST.get("sh_fname")
             sh_lname = request.POST.get("sh_lname")
             sh_mname = request.POST.get("sh_mname")
@@ -40,7 +44,18 @@ def admin_stockholder(request):
             sh_proxy_fname = request.POST.get("sh_proxy_fname")
             sh_proxy_lname = request.POST.get("sh_proxy_lname")
             sh_proxy_mname = request.POST.get("sh_proxy_mname")
+            sh_proxy_email = request.POST.get("sh_proxy_email")
+            sh_proxy_status = request.POST.get("sh_proxy_status")
+            sh_classification = request.POST.get("sh_classification")
+            if sh_proxy_status:
+                sh_proxy_status = True
+            else:
+                sh_proxy_status = False
 
+            if sh_classification:
+                sh_classification = True
+            else:
+                sh_classification = False
             if upload_images:
                 fs = FileSystemStorage()
                 current_datetime = datetime.datetime.now()
@@ -61,7 +76,14 @@ def admin_stockholder(request):
                                             sh_proxy_lname=sh_proxy_lname,
                                             sh_proxy_mname=sh_proxy_mname,
                                             sh_account= User.objects.get(id=account_user),
+                                            sh_shares=sh_shares,
+                                            mobile_no=mobile_no,
+                                            sh_proxy_email = sh_proxy_email,
+                                            sh_proxy_status = sh_proxy_status,
+                                            sh_classification=sh_classification
                                             )
+            form = AccountForm()
+            user_form = UserForm()
 
     else:
         form = AccountForm()
@@ -71,36 +93,49 @@ def admin_stockholder(request):
 
 @login_required(login_url="/")
 def update_stockholder(request, pk):
+    datenow = datetime.datetime.now()
     if request.method == "POST":
-        sh_fname = request.POST.get("sh_fname")
-        sh_lname = request.POST.get("sh_lname")
-        sh_mname = request.POST.get("sh_mname")
-        sh_email = request.POST.get("sh_email")
-        sh_position = request.POST.get("sh_position")
-        upload_images = request.FILES['company_images']
-        sh_proxy_fname = request.POST.get("sh_proxy_fname")
-        sh_proxy_lname = request.POST.get("sh_proxy_lname")
-        sh_proxy_mname = request.POST.get("sh_proxy_mname")
+        sh_accounts = StockHolder.objects.get(id=pk)
+        sh_proxy_status = request.POST.get("sh_proxy_status")
+        sh_classification = request.POST.get("sh_classification")
+        upload_images = request.FILES.get('company_images')
 
+        if sh_proxy_status:
+            sh_proxy_status = True
+        else:
+            sh_proxy_status = False
+
+        if sh_classification:
+            sh_classification = True
+        else:
+            sh_classification = False
         # UPLOAD IMAGE IN MEDIA STORAGE and CONVERTING ITS FILENAME
         if upload_images:
-                fs = FileSystemStorage()
-                current_datetime = datetime.datetime.now()
-                date = str(current_datetime.month)+'-'+str(current_datetime.day)+'-'+str(current_datetime.year)
-                time = str(current_datetime.hour)+str(current_datetime.minute)+str(current_datetime.second)
-                ext = upload_images.name.split(".")[-1]
-                name = fs.save('Media_Files/StockHolder_Profile_Picture/'+time+'.'+ext, upload_images)
-                url = fs.url(name)
-
+            fs = FileSystemStorage()
+            current_datetime = datetime.datetime.now()
+            date = str(current_datetime.month)+'-'+str(current_datetime.day)+'-'+str(current_datetime.year)
+            time = str(current_datetime.hour)+str(current_datetime.minute)+str(current_datetime.second)
+            ext = upload_images.name.split(".")[-1]
+            name = fs.save('Media_Files/StockHolder_Profile_Picture/'+time+'.'+ext, upload_images)
+            url = fs.url(name)
+            sh_accounts.company_images = url
+        
         # SAVING STOCKHOLDER INFO
-        sh_accounts = StockHolder.objects.filter(id=pk).update(sh_fname=sh_fname,
-                            sh_lname=sh_lname, 
-                            sh_mname=sh_mname, 
-                            sh_position=sh_position, 
-                            company_images=url,
-                            sh_proxy_fname=sh_proxy_fname, 
-                            sh_proxy_lname=sh_proxy_lname, 
-                            sh_proxy_mname=sh_proxy_mname)
+        sh_accounts.sh_shares = request.POST.get("sh_shares")
+        sh_accounts.mobile_no = request.POST.get("mobile_no")
+        sh_accounts.sh_fname = request.POST.get("sh_fname")
+        sh_accounts.sh_lname = request.POST.get("sh_lname")
+        sh_accounts.sh_mname = request.POST.get("sh_mname")
+        sh_accounts.sh_email = request.POST.get("sh_email")
+        sh_accounts.sh_position = request.POST.get("sh_position")
+        sh_accounts.sh_proxy_fname = request.POST.get("sh_proxy_fname")
+        sh_accounts.sh_proxy_lname = request.POST.get("sh_proxy_lname")
+        sh_accounts.sh_proxy_mname = request.POST.get("sh_proxy_mname")
+        sh_accounts.sh_proxy_email = request.POST.get("sh_proxy_email")
+        sh_accounts.edited_by = request.POST.get("edited_by")
+        sh_accounts.sh_proxy_status =  sh_proxy_status
+        sh_accounts.sh_classification = sh_classification 
+        sh_accounts.save()
 
 
     return redirect('admin_stockholder')
