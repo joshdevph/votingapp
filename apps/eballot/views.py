@@ -116,7 +116,6 @@ def cast_vote(request, id):
     
     vote_pts = request.POST.get('vote_pts')
 
-    vote_code = uuid.uuid4().hex[:16].upper() # generate unique identifier for every casting vote
 
     eballot = EBallot.objects.all() # select Eballot model
     eballot = eballot.filter(eballot_num_id = int(id)) # filter eballot_num in Eballot model
@@ -134,8 +133,8 @@ def cast_vote(request, id):
                 eballot_num = request.POST.get('eballot_num'),
                 sh_fullname = request.POST.get('sh_fullname'),
                 sh_id = request.POST.get('sh_id'),
-                vote_pts = request.POST.get('vote_pts'),
-                vote_code = vote_code
+                vote_pts = request.POST.get('vote_pts')
+ 
             )
 
             remain_vote = eballot_data.remain_vote #Fetch remaing vote allocation
