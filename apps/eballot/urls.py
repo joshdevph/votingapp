@@ -14,6 +14,9 @@ urlpatterns = [
     path('result/', views.result, name='result'),
     path('result/end_election/<str:id>', views.end_election, name='end_election'),
     path('result/update_elected/<str:id>', views.update_elected, name='update_elected'),
-     path('select_election_report/', views.select_election_report, name='select_election_report')
+    path('select_election_report/', views.select_election_report, name='select_election_report'),
+    path('select_election_report/voters_list/<str:id>', views.voters_list, name='voters_list'),
+    path('vote_history/', views.vote_history, name='vote_history'),
+    path('vote_history/history_details/<str:id>', views.history_details, name='history_details')
 
 ]

@@ -34,6 +34,8 @@ class StockholderVote(models.Model):
     sh_id = models.CharField(max_length=250, null=False)
     sh_fullname= models.CharField(max_length=250, null=False)
     vote_pts = models.IntegerField(default=0, null=False)
+    vote_code = models.CharField(max_length=250, null=False)
+    result = models.IntegerField(default=0, null=False)
 
 class History(models.Model):
    election_code = models.CharField(max_length=250, null=False)
@@ -43,3 +45,4 @@ class History(models.Model):
    nominee_fullname= models.CharField(max_length=250, null=False)
    vote_pts = models.IntegerField(default=0, null=False)
    result = models.CharField(max_length=250, null=False)
+
