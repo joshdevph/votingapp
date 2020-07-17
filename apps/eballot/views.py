@@ -52,6 +52,12 @@ def create_eballot(request):
         eballot_num = EBallotNum.objects.create(eballot_num = eballot_num)
 
         eballot_num_entry = EBallotNum.objects.get(eballot_num = eballot_num)
+        #Sending Email
+        subject = 'User Access'
+        message = 'http://127.0.0.1:8000/eballot/eballot_list/eballot_form/'+str(eballot_num_entry.id)
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list =[name.sh_email]
+        send_mail( subject, message, email_from, recipient_list )
 
         EBallot.objects.create(election_code = name.election_code,                              
                                 eballot_num = eballot_num_entry,    
