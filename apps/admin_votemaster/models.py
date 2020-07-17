@@ -19,6 +19,7 @@ class Attendance(models.Model):
     sh_shares = models.CharField(null=True, max_length=255)
     at_status = models.CharField(null=True, max_length=255)
     election_status = models.IntegerField(default=0 ,null=False)
+    sh_classification = models.CharField(null=True, max_length=255)
     
 
 class Nominee(models.Model):
