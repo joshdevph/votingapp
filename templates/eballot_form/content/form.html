@@ -5,6 +5,14 @@
     <div class="">
       <div class="clearfix"></div>
 
+      {% if eballot_data.alert == 1 %}
+        <div class="alert alert-danger alert-dismissible " role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+          </button>
+          <strong>You exceed to your potential vote points</strong> Re-vote again.
+        </div>
+      {% endif %}
+
       <div class="row" style="display: block;">
         <div class="row">
           <div class="col-md-12">
@@ -38,7 +46,7 @@
                 <p class="lead"><small><b>Total Potential Vote Points:</b> {{ eballot_data.vote_allocated }} </small></p>
                 </div>
               </div>
-            
+
             </div>
             </div>
           </div>
@@ -47,7 +55,11 @@
         <div class="col-md-7 col-sm-7  ">
           <div class="x_panel">
             <div class="x_title">
-                <h2>Nominee <small style='text-align: center; margin-left: 300px;'>Remaining vote:</small> <b>{{ eballot_data.remain_vote }}</b></h2>
+                <h2>Nominee 
+                  {% if eballot_data.sh_classification == 'true' %}
+                    <small style='text-align: center; margin-left: 300px;'>Remaining vote:</small> <b>{{ eballot_data.remain_vote }}</b>
+                  {% endif %}
+                </h2>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -89,17 +101,25 @@
         <div class="col-md-5 col-sm-5  ">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Vote Cast</h2>
+              {% if count.stockholdervote_count > 0 %}
+              <h2>Vote Cast
+                {% if eballot_data.sh_classification == 'true' %}
+                    <small style='text-align: center; margin-left: 130px;'>Total vote cast:</small> <b>{{ total_vote_cast }}</b>
+                {% endif %}
+                
+              </h2>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                {% if count.stockholdervote_count > 0 %}
+                
                     <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Full Name</th>
                                 <th>Vote Casted</th>
-                                <th>Action</th>
+                                {% if eballot_data.sh_classification == 'true' %}
+                                  <th>Action</th>
+                                {% endif %}
                             </tr>
                         </thead>
                 
@@ -108,11 +128,14 @@
                                 <tr>
                                     <td>{{ res.sh_fullname }}</td>
                                     <td>{{ res.vote_pts }}</td>
-                                    <td> <a href='cast_remove/{{ res.id }} {{ res.sh_id }}' class="btn btn-danger btn-sm">Remove Vote</a></td>
+                                    {% if eballot_data.sh_classification == 'true' %}
+                                      <td> <a href='cast_remove/{{ res.id }} {{ res.sh_id }}' class="btn btn-danger btn-sm">Remove Vote</a></td>
+                                    {% endif %}
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+                    <button style='float: right; margin-right: 30px;' class="btn btn-success btn-sm" data-toggle="modal" data-target="#update"> Submit Vote</button></centre>
                     {% else %}
                     <p class="alert alert-danger">No vote casted</p>
                 {% endif %}
@@ -126,4 +149,47 @@
       </div>
     </div>
   </div>
+
+    <!-- UPDATE STOCKHOLDER MODAL -->
+    <div class="modal fade bd-example-modal-md" id="update">
+      <div class="modal-dialog modal-md">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Vote Summary</h5>
+              </div>
+              <div class="modal-body">
+
+                <form class="form-label-left input_mask m-2" action="vote_summary/{{eballot_data.eballot_num}}" method="POST">
+                  {% csrf_token %}
+               
+                          <div class="col-md-6 col-sm-6  form-group has-feedback">
+                              <label for="lastname">Nominee Name</label>
+                          </div>
+                          <div class="col-md-4 col-sm-3  form-group has-feedback">
+                            <label for="lastname">Vote Casted</label>
+                        </div>
+                
+                          {% for i in stockholdervote %} 
+                              <input type="hidden" class="form-control" name="election_code"  value="{{i.election_code}}" readonly>
+                              <input type="hidden" class="form-control" name="eballot_num"  value="{{i.eballot_num}}" readonly>
+
+                              <div class="col-md-6 col-sm-6  form-group has-feedback">
+                                  <input type="text" class="form-control" name="sh_fullname"  value="{{i.sh_fullname}}" readonly>
+                              </div>
+                              <div class="col-md-4 col-sm-3  form-group has-feedback">
+                                <input type="text" class="form-control" name="vote_pts"  value="{{i.vote_pts}}" readonly>
+                            
+                            </div>
+                          {% endfor %}      
+            </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-round btn-sm btn-secondary pl-4 pr-4" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-round btn-sm btn-primary pl-4 pr-4">Submit</button>
+              </div>
+            </form>
+          </div>
+      </div>
+    </div>
+    <!-- END UPDATE STOCKHOLDER MODAL -->
+  <!-- END UPDATE STOCKHOLDER MODAL -->
 {% endblock %}
