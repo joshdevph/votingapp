@@ -20,8 +20,9 @@ class Attendance(models.Model):
     at_status = models.CharField(null=True, max_length=255)
     election_status = models.IntegerField(default=0 ,null=False)
     sh_classification = models.CharField(null=True, max_length=255)
+    sh_proxy_status = models.BooleanField(default=False)
     
-
+    
 class Nominee(models.Model):
     sh_id = models.CharField(null=False, max_length=255)
     election_code = models.CharField(null=False, max_length=255)

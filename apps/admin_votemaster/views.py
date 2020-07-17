@@ -67,37 +67,57 @@ def admin_votemaster_attendance(request, id):
                         Attendance.objects.filter(sh_id=item.id, election_code=election.code).update(at_status='present')
                     else:
                         if item.sh_proxy_status == 'true':
-                            item.sh_email = sh_proxy_email 
-
-                        attendance_record = Attendance(
-                            sh_id=item.id,
-                            election_code=election.code,
-                            sh_fullname=item.sh_fname + " " + item.sh_lname,
-                            at_status="present",
-                            sh_email=item.sh_email,
-                            sh_shares=item.sh_shares,
-                            sh_classification = item.sh_classification
-                        )
+                            attendance_record = Attendance(
+                                sh_id=item.id,
+                                election_code=election.code,
+                                sh_fullname=item.sh_fname + " " + item.sh_lname,
+                                at_status="present",
+                                sh_email=item.sh_proxy_email,
+                                sh_shares=item.sh_shares,
+                                sh_classification = item.sh_classification,
+                                sh_proxy_status = item.sh_proxy_status
+                            )
+                        else: 
+                            attendance_record = Attendance(
+                                sh_id=item.id,
+                                election_code=election.code,
+                                sh_fullname=item.sh_fname + " " + item.sh_lname,
+                                at_status="present",
+                                sh_email=item.sh_email,
+                                sh_shares=item.sh_shares,
+                                sh_classification = item.sh_classification,
+                                sh_proxy_status = item.sh_proxy_status
+                            )
 
                         attendance_record.save() # save new attendance record to database with status "present"
 
                 else: # codes in this section applies when the checkbox is unchecked
                     if Attendance.objects.filter(sh_id=item.id, election_code=election.code):  # if this stakeholder has an attendance record for the current election, his/her status will just be updated as 'absent'
-                        Attendance.objects.filter(sh_id=item.id, election_code=election.code).update(at_status='absent',sh_shares=item.sh_shares)
+                        Attendance.objects.filter(sh_id=item.id, election_code=election.code).update(at_status='absent', sh_shares=item.sh_shares)
 
                     else:  # will add new attendance record for this specific stakeholder with the status 'absent'
                         if item.sh_proxy_status == 'true':
-                            item.sh_email = item.sh_proxy_email 
-                        
-                        attendance_record = Attendance(
-                            sh_id=item.id,
-                            election_code=election.code,
-                            sh_fullname=item.sh_fname + " " + item.sh_lname,
-                            at_status="absent",
-                            sh_email=item.sh_email,
-                            sh_shares=item.sh_shares,
-                            
-                        )
+                            attendance_record = Attendance(
+                                sh_id=item.id,
+                                election_code=election.code,
+                                sh_fullname=item.sh_fname + " " + item.sh_lname,
+                                at_status="absent",
+                                sh_email=item.sh_proxy_email,
+                                sh_shares=item.sh_shares,
+                                sh_classification = item.sh_classification,
+                                sh_proxy_status = item.sh_proxy_status
+                            )
+                        else: 
+                            attendance_record = Attendance(
+                                sh_id=item.id,
+                                election_code=election.code,
+                                sh_fullname=item.sh_fname + " " + item.sh_lname,
+                                at_status="absent",
+                                sh_email=item.sh_email,
+                                sh_shares=item.sh_shares,
+                                sh_classification = item.sh_classification,
+                                sh_proxy_status = item.sh_proxy_status
+                            )
                         attendance_record.save() # save new attendance record to database with status "absent"
         else:
             print("invalid")
