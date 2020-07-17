@@ -23,6 +23,9 @@ class EBallot(models.Model):
     vote_allocated = models.CharField(max_length=250, null=False)
     remain_vote = models.CharField(max_length=250, null=False)
     company_images = models.FileField(upload_to='Media_Files/StockHolder_Profile_Picture')
+    sh_classification = models.CharField(max_length=250, null=False) 
+    alert = models.IntegerField(default=0)
+    election_status = models.IntegerField(default=0)
   
 
 class StockholderVote(models.Model):
@@ -31,3 +34,12 @@ class StockholderVote(models.Model):
     sh_id = models.CharField(max_length=250, null=False)
     sh_fullname= models.CharField(max_length=250, null=False)
     vote_pts = models.IntegerField(default=0, null=False)
+
+class History(models.Model):
+   election_code = models.CharField(max_length=250, null=False)
+   date_last_updated = models.DateTimeField(auto_now=True)
+   eballot_num = models.CharField(max_length=250, null=False)
+   vote_allocated = models.CharField(max_length=250, null=False)
+   nominee_fullname= models.CharField(max_length=250, null=False)
+   vote_pts = models.IntegerField(default=0, null=False)
+   result = models.CharField(max_length=250, null=False)
