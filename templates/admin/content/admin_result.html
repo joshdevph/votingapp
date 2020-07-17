@@ -8,9 +8,9 @@
               <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Stockholder<small>Master List</small></h2>
+                    <h2>Election Result</h2>
                     <ul class="nav navbar-right panel_toolbox"></ul>
-                      </li>
+                    <button style='float: right; margin-right: 30px;' class="btn btn-primary pl-4 pr-4" data-toggle="modal" data-target="#update"> End Election</button></centre>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
@@ -34,21 +34,20 @@
                       <tbody>
                         <!--  ******************** NOTE **********************-->
                         <!-- Dont remove the delete and update Modals Inside the STOCKHOLDER DATA TABLE comments -->
-                        {% for res in result %}
+                       
                         <tr>
                         <form method="POST" action="update_elected/{{res.sh_fullname}}">
 
                         {% csrf_token %}
-                          <td>{{res.election_code}}</td>
-                          <td>{{res.sh_fullname}}</td>
-                          <td style="text-align:right">{{res.votes_pts}}</td>
+                        {% for i in result %}
+                          <td>{{ i.election_code }}</td>
+                          <td>{{ i.sh_fullname }}</td>
+                          <td style="text-align:center">{{ i.total_vote }}</td>
                           <td><input type='submit' class="btn btn-success col-md-6 btn-sm" value='Update' style="float: left;"></td>
                         </tr>
                          </form>
-                        {% endfor %}
-         
+                       {% endfor %}
                       </tbody>
-
                     </table>
                     <!-- END STOCKHOLDER DATA TABLE -->
 			
@@ -56,6 +55,29 @@
                 </div>
               </div>
             </div>
+
+
+             <!-- UPDATE STOCKHOLDER MODAL -->
+    <div class="modal fade bd-example-modal-md" id="update">
+      <div class="modal-dialog modal-md">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Notice:</h5>
+              </div>
+              <div class="modal-body">
+                {% csrf_token %}
+                <form class="form-label-left input_mask m-2" action="end_election/{{election_data.code}}" method="">
+                  <h2 style="text-align: center;">Finish election for {{election_data.description}} ?</h2>
+            </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-round btn-sm btn-danger pl-4 pr-4" data-dismiss="modal">No</button>
+                  <button type="submit" class="btn btn-round btn-sm btn-primary pl-4 pr-4">Yes</button>
+              </div>
+            </form>
+          </div>
+      </div>
+    </div>
+
                 </div>
               </div>
             </div>
@@ -65,6 +87,7 @@
 
 
         <div class="clearfix"></div>
+        
 
 
 {% endblock %}
