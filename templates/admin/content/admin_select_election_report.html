@@ -2,17 +2,17 @@
 {% load staticfiles %}
 {% block content %}
         <!-- page content -->
-        
         <div class="right_col" role="main">
+          <div class="page-title">
+          </div>
           <div class="">
             <div class="row">
               <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>EBallot Form<small>Master List</small></h2>
+                    <h2>Stockholder<small>Voters Master List</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                             <!-- FORM VALIDATION - APPEAR IF IT HAS A ERROR -->
-                      </li>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
@@ -21,36 +21,32 @@
                           <div class="col-sm-12">
                             <div class="card-box table-responsive">
 
-
                     <!-- STOCKHOLDER DATA TABLE -->
-
                     <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                              <th>Election <Code></Code></th>
-                              <th>Ballot Batch ID</th>
-                              <th>Ballot No.</th>
-                              <th>Stockholder Name</th>
-                              <th>Status</th>
+                              <th>Election Code</th>
+                              <th>Election Description</th>
+                              <th>Election Description</th>
+                              <th>Date Created</th>
+                              <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
                             <!--  ******************** NOTE **********************-->
                             <!-- Dont remove the delete and update Modals Inside the STOCKHOLDER DATA TABLE comments -->
-                           
-                            {% for list in eballot %}
+                            {% csrf_token %}
+                            {% for list in election_code_list %}
                             <tr>
-                              <td>{{list.election_code}}</td>
-                              <td>{{list.eballot_batch_id}}</td>
-                              <td>{{list.eballot_num}}</td>
-                              <td>{{list.sh_fullname}}</td>
-                              {% if list.election_status == 0 %}
-                                <td class="text-secondary" style="text-align: center;"><b>not yet Vote</b></td>
-                                {% else %}
-                                <td class="text-success" style="text-align: center;"><b>Voted</b></td>
-                              {% endif %}
+                              <td>{{list.code}}</td>
+                              <td>{{list.description}}</td>
+                              <td class="text-success">{{list.status}}</td>
+                              <td>{{list.date_added}}</td>
+                              <td>
+                              <a href='voters_list/{{list.code}}' class="btn btn-lg btn-round btn-primary pl-4 pr-3 fa fa-share-square"> More details</a>           
+                              </td>
                             </tr>  
-                            {% endfor %}
+                              {% endfor %}
 					
                   </div>
                 </div>

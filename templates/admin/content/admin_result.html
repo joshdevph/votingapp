@@ -1,8 +1,11 @@
 {% extends 'admin/main.html' %}
 {% load staticfiles %}
 {% block content %}
+
         <!-- page content -->
         <div class="right_col" role="main">
+          <div class="page-title">
+          </div>
           <div class="">
             <div class="row">
               <div class="col-md-12 col-sm-12 ">
@@ -10,7 +13,9 @@
                   <div class="x_title">
                     <h2>Election Result</h2>
                     <ul class="nav navbar-right panel_toolbox"></ul>
-                    <button style='float: right; margin-right: 30px;' class="btn btn-primary pl-4 pr-4" data-toggle="modal" data-target="#update"> End Election</button></centre>
+                    {% if count.election_data > 0 %}
+                        <button style='float: right; margin-right: 30px;' class="btn btn-primary pl-4 pr-4" data-toggle="modal" data-target="#update"> End Election</button></centre>
+                    {% endif %}  
                     </ul>
                     <div class="clearfix"></div>
                   </div>
@@ -18,7 +23,6 @@
                       <div class="row">
                           <div class="col-sm-12">
                             <div class="card-box table-responsive">
-
 
                     <!-- STOCKHOLDER DATA TABLE -->
 
@@ -34,16 +38,15 @@
                       <tbody>
                         <!--  ******************** NOTE **********************-->
                         <!-- Dont remove the delete and update Modals Inside the STOCKHOLDER DATA TABLE comments -->
-                       
                         <tr>
-                        <form method="POST" action="update_elected/{{res.sh_fullname}}">
-
                         {% csrf_token %}
                         {% for i in result %}
+                        <form method="" action="update_elected/{{i.sh_fullname}}">     
+
                           <td>{{ i.election_code }}</td>
                           <td>{{ i.sh_fullname }}</td>
                           <td style="text-align:center">{{ i.total_vote }}</td>
-                          <td><input type='submit' class="btn btn-success col-md-6 btn-sm" value='Update' style="float: left;"></td>
+                          <td><a href="update_elected/{{i.sh_fullname}}" class="btn btn-success col-md-6 btn-sm" style="float: left;">Elect</a></td>
                         </tr>
                          </form>
                        {% endfor %}

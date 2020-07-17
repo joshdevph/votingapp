@@ -1,18 +1,21 @@
 {% extends 'admin/main.html' %}
 {% load staticfiles %}
 {% block content %}
+
         <!-- page content -->
-        
+      <form>
         <div class="right_col" role="main">
+          <div class="page-title">
+          </div>
           <div class="">
             <div class="row">
               <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>EBallot Form<small>Master List</small></h2>
+                
+                    <h2>Vote History Report</h2>
                     <ul class="nav navbar-right panel_toolbox">
                             <!-- FORM VALIDATION - APPEAR IF IT HAS A ERROR -->
-                      </li>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
@@ -20,35 +23,31 @@
                       <div class="row">
                           <div class="col-sm-12">
                             <div class="card-box table-responsive">
-
-
+                                              
+                                <div class="row">
+                                  <div class="col-md-6">
+                                  <p class="lead"><small>&nbsp;&nbsp;&nbsp; Election code:<b> {{ election_code }}</b></small> </p>
+                                  </div>
+                                </div>
+                                        
                     <!-- STOCKHOLDER DATA TABLE -->
-
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                    <table id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                              <th>Election <Code></Code></th>
-                              <th>Ballot Batch ID</th>
-                              <th>Ballot No.</th>
-                              <th>Stockholder Name</th>
-                              <th>Status</th>
+                              <th>Nominee Name</th>
+                              <th>Vote Score</th>
+                              <th>Result</th>
                             </tr>
                           </thead>
                           <tbody>
                             <!--  ******************** NOTE **********************-->
                             <!-- Dont remove the delete and update Modals Inside the STOCKHOLDER DATA TABLE comments -->
                            
-                            {% for list in eballot %}
-                            <tr>
-                              <td>{{list.election_code}}</td>
-                              <td>{{list.eballot_batch_id}}</td>
-                              <td>{{list.eballot_num}}</td>
-                              <td>{{list.sh_fullname}}</td>
-                              {% if list.election_status == 0 %}
-                                <td class="text-secondary" style="text-align: center;"><b>not yet Vote</b></td>
-                                {% else %}
-                                <td class="text-success" style="text-align: center;"><b>Voted</b></td>
-                              {% endif %}
+                            {% for list in history %}
+                            <tr>                    
+                              <td>{{list.nominee_fullname}}</td>
+                              <td>{{list.total_vote}}</td>
+                              <td class = "text-success"><b>{{list.result}}</b></td>
                             </tr>  
                             {% endfor %}
 					
@@ -64,5 +63,6 @@
         <!-- /page content -->
 
         <div class="clearfix"></div>
+        
 
 {% endblock %}

@@ -2,8 +2,6 @@
   <div class="menu_section">
     <h3>General</h3>
     <ul class="nav side-menu">
-      <li><a href="{% url 'admin_dashboard' %}"><i class="fa fa-home"></i> Dashboard </a>
-      </li>
       <li><a href="{% url 'admin_stockholder' %}"><i class="fa fa-user"></i> Stockholder </a>
       </li>
       <li><a href="{% url 'admin_votemaster' %}"><i class="fa fa-edit"></i> Election </a>
@@ -16,9 +14,9 @@
       </li>
      <li><a><i class="fa fa-file-text"></i>Reports<span class="fa fa-chevron-down"></span></a>
 											<ul class="nav child_menu">
-												<li><a href="#">Voters Lists</a>
+												<li><a href="{% url 'select_election_report' %}">Voters Lists</a>
 												</li>
-												<li><a href="#">Vote History</a>
+												<li><a href="{% url 'vote_history' %}">Vote History</a>
 												</li>
 											</ul>
 										</li>

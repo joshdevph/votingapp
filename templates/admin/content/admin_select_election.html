@@ -1,6 +1,42 @@
 {% extends 'admin/main.html' %}
 {% load staticfiles %}
 {% block content %}
+
+<style>
+  * {
+  margin: 0;
+  padding: 0;
+}
+
+.loader {
+  display: none;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.loading {
+  border: 5px solid #ccc;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border-top-color: #1ecd97;
+  border-left-color: #1ecd97;
+  animation: spin 1s infinite ease-in;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
+
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
@@ -21,6 +57,11 @@
 
 
                     <!-- STOCKHOLDER DATA TABLE -->
+                    <div class="loader">
+                      <div class="loading">
+                      </div>
+                      <b>Loading</b>
+                    </div>
 
                     <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
@@ -78,7 +119,7 @@
                                       </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-round btn-sm btn-secondary pl-4 pr-4" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-round btn-sm btn-primary pl-4 pr-4">Send EBallot</button>
+                                            <button type="submit" class="btn btn-round btn-sm btn-primary pl-4 pr-4" onclick="spinner()">Send EBallot</button>
                                         </div>
                                       </form>
                                     </div>
@@ -99,5 +140,11 @@
         <!-- /page content -->
 
         <div class="clearfix"></div>
+
+        <script type="text/javascript">
+          function spinner() {
+              document.getElementsByClassName("loader")[0].style.display = "block";
+          }
+      </script>  
 
 {% endblock %}

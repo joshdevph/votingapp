@@ -52,7 +52,7 @@
           </div>
 
 
-        <div class="col-md-7 col-sm-7  ">
+        <div class="col-md-8 col-sm-7  ">
           <div class="x_panel">
             <div class="x_title">
                 <h2>Nominee 
@@ -85,7 +85,7 @@
                                 <input type='hidden' class='form-control' name='sh_id' value='{{ eballot_data.sh_id }}'>
                                  
                                 <!-- Nominee vote details -->
-                                <td> <img src="{{ name.company_images }}" alt="" class="avatar avatar-150 img-circle "></td> 
+                                <td><img src="{{ name.company_images }}" alt="" class="avatar avatar-10 img-circle" style="width: 50px;"></td> 
                                 <td><input type='text' class='form-control' name='sh_fullname' value='{{ name.sh_fullname }}' readonly></td>
                                 <td><input type='number' class='form-control col-md-9' name='vote_pts'></td>
                                 <td><input type='submit' class="btn btn-primary btn-sm" value='Cast'></td>
@@ -98,7 +98,7 @@
           </div>
         </div>
 
-        <div class="col-md-5 col-sm-5  ">
+        <div class="col-md-4 col-sm-5  ">
           <div class="x_panel">
             <div class="x_title">
               {% if count.stockholdervote_count > 0 %}
@@ -116,7 +116,7 @@
                         <thead>
                             <tr>
                                 <th>Full Name</th>
-                                <th>Vote Casted</th>
+                                <th>Vote Cast</th>
                                 {% if eballot_data.sh_classification == 'true' %}
                                   <th>Action</th>
                                 {% endif %}
