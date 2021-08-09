@@ -60,7 +60,7 @@ pypiwin32==223
 python-dateutil==2.8.1
 python-http-client==3.2.4
 pytz==2019.3
-pywin32==227
+pywin32==301
 redis==3.2.1
 reportlab==3.5.28
 requests==2.22.0
