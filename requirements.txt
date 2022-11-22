@@ -45,7 +45,7 @@ MarkupSafe==1.1.1
 msgpack==0.6.2
 parso==0.5.2
 pickleshare==0.7.5
-Pillow==6.2.0
+Pillow==9.3.0
 poyo==0.5.0
 prompt-toolkit==3.0.2
 psycopg2==2.8.3
